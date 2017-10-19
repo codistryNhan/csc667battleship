@@ -1,0 +1,26 @@
+{
+  "name": "term-project-csc667-project-jianhong-nhan-norald",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start-dev": "DEBUG=TYPE-TO-SHOOT:* nodemon ./bin/www"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sfsu-csc-667-fall-2017/term-project-csc667-project-jianhong-nhan-norald.git"
+  },
+  "author": "Norald Alejo, Jianhong Kuang, Nhan Nguyen, Mrinalini Garre",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/sfsu-csc-667-fall-2017/term-project-csc667-project-jianhong-nhan-norald/issues"
+  },
+  "homepage": "https://github.com/sfsu-csc-667-fall-2017/term-project-csc667-project-jianhong-nhan-norald#readme",
+  "devDependencies": {
+    "nodemon": "^1.12.1"
+  },
+  "dependencies": {
+    "dotenv": "^4.0.0"
+  }
+}
