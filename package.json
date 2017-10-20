@@ -6,6 +6,9 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start-dev": "DEBUG=TYPE-TO-SHOOT:* nodemon ./bin/www"
+    "db:create:migration": "sequelize migration:generate --name",
+    "db:migrate": "sequelize db:migrate",
+    "db:rollback": "sequelize db:migrate:undo"
   },
   "repository": {
     "type": "git",
@@ -21,6 +24,8 @@
     "nodemon": "^1.12.1"
   },
   "dependencies": {
-    "dotenv": "^4.0.0"
+    "dotenv": "^4.0.0",
+    "sequelize": "^4.15.0",
+    "sequelize-cli": "^3.0.0"
   }
 }
