@@ -5,10 +5,11 @@
   "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start-dev": "DEBUG=TYPE-TO-SHOOT:* nodemon ./bin/www"
-    "db:create:migration": "sequelize migration:generate --name",
+    "start-dev": "DEBUG=type-to-shoot:* nodemon ./bin/www",
+    "db:create:migration": "sequelize migration:generate --name ",
     "db:migrate": "sequelize db:migrate",
-    "db:rollback": "sequelize db:migrate:undo"
+    "db:rollback": "sequelize db:migrate:undo",
+    "postinstall": "sequelize db:migrate"
   },
   "repository": {
     "type": "git",
@@ -25,7 +26,8 @@
   },
   "dependencies": {
     "dotenv": "^4.0.0",
-    "sequelize": "^4.15.0",
+    "pg-promise": "^7.2.0",
+    "sequelize": "^4.20.1",
     "sequelize-cli": "^3.0.0"
   }
 }
