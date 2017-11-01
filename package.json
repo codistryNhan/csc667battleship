@@ -1,11 +1,10 @@
 {
-  "name": "term-project-csc667-project-jianhong-nhan-norald",
+  "name": "type-to-shoot",
   "version": "1.0.0",
   "description": "",
   "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start-dev": "DEBUG=type-to-shoot:* nodemon ./bin/www",
+    "start:dev": "DEBUG=APP_NAME:* nodemon ./bin/www",
     "db:create:migration": "sequelize migration:generate --name ",
     "db:migrate": "sequelize db:migrate",
     "db:rollback": "sequelize db:migrate:undo",
@@ -15,19 +14,26 @@
     "type": "git",
     "url": "git+https://github.com/sfsu-csc-667-fall-2017/term-project-csc667-project-jianhong-nhan-norald.git"
   },
-  "author": "Norald Alejo, Jianhong Kuang, Nhan Nguyen, Mrinalini Garre",
+  "author": "Jianhong Kuang, Nhan Nguyen, Mrinalini Garre, Norald Alejo",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/sfsu-csc-667-fall-2017/term-project-csc667-project-jianhong-nhan-norald/issues"
   },
+  "dependencies": {
+    "body-parser": "~1.18.2",
+    "cookie-parser": "~1.4.3",
+    "debug": "~2.6.9",
+    "dotenv": "^4.0.0",
+    "express": "~4.15.5",
+    "hbs": "~4.0.1",
+    "morgan": "~1.9.0",
+    "pg-promise": "^7.2.0",
+    "sequelize": "^4.20.1",
+    "sequelize-cli": "^3.0.0",
+    "serve-favicon": "~2.4.5"
+  },
   "homepage": "https://github.com/sfsu-csc-667-fall-2017/term-project-csc667-project-jianhong-nhan-norald#readme",
   "devDependencies": {
     "nodemon": "^1.12.1"
-  },
-  "dependencies": {
-    "dotenv": "^4.0.0",
-    "pg-promise": "^7.2.0",
-    "sequelize": "^4.20.1",
-    "sequelize-cli": "^3.0.0"
   }
 }

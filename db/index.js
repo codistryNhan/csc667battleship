@@ -1,4 +1,4 @@
-const pgp = require('pg-promise')();
+const pgp = require('pg-promise')(/*options*/);
 
 const connection = pgp(process.env.DATABASE_URL);
 
