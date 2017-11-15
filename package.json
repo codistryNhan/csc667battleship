@@ -1,10 +1,10 @@
 {
-  "name": "type-to-shoot",
+  "name": "battleship",
   "version": "1.0.0",
   "description": "",
   "main": "app.js",
   "scripts": {
-    "start" : "node ./bin/www",
+    "start": "node ./bin/www",
     "start:dev": "DEBUG=APP_NAME:* nodemon ./bin/www",
     "db:create:migration": "sequelize migration:generate --name ",
     "db:migrate": "sequelize db:migrate",
@@ -28,8 +28,9 @@
     "express": "~4.15.5",
     "hbs": "~4.0.1",
     "morgan": "~1.9.0",
-    "pg-promise": "^7.2.0",
-    "sequelize": "^4.20.1",
+    "pg": "^7.4.0",
+    "pg-promise": "^7.3.1",
+    "sequelize": "^4.22.6",
     "sequelize-cli": "^3.0.0",
     "serve-favicon": "~2.4.5"
   },
