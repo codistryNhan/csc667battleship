@@ -1,55 +1,29 @@
-<!--Navigation Bar-->
-<nav class="navbar navbar-expand-lg navbar-light bg-faded">
-	<a class="navbar-brand" href={{home}}>{{title}}</a>
-	<button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#content" aria-controls="content" aria-expanded="false" aria-label="Toggle navigation">
-		<span class="navbar-toggler-icon"></span>
-	</button>
+<div class="row justify-content-center">
+  <div class="form col-6">
+    <h1 class="text-center mb-3">Register</h1>
 
-	<div class="collapse navbar-collapse" id="content">
-		<ul class="navbar-nav mr-auto">
-			<li class="nav-item">
-				<a class="nav-link" href={{home}}>Home</a>
-			</li>
-		</ul>
+    <form method="post" action="/register">
+        <div class="form-group">
+          <input type="text" name="username" class="form-control" placeholder="Username" required>
+        </div>
 
-		<ul class="nav navbar-nav navbar-right">
-			<li class="nav-item">
-				<a class="nav-link" href={{register}}>Register <span class="sr-only">(current)</span></a>
-			</li>
-			<li class="nav-item">
-				<a class="nav-link" href={{login}}>Login</a>
-			</li>
-		</ul>
-	</div>
-</nav>
+        <div class="form-group">
+          <input type="email" name="email" class="form-control" placeholder="Email" required">
+        </div>    
 
-<div class="container">
-	<h1>Register for {{title}}</h1>
-	<form method="post" action='/register'>
-   		<div class="form row">
-        	<div class="form-group col-md-6">
-            	<input type="text" name="firstName" class="form-control" placeholder="First Name" required autofocus>
-        	</div>
-        	<div class="form-group col-md-6">
-    	    	<input type="text" name="lastName" class="form-control" placeholder="Last Name" required>
-    	    </div>
-    	</div>
-    	<div class="form-group">
-        	<input type="text" name="newUsername" class="form-control" placeholder="Username" required>
-    	</div>
-    	<div class="form-group">
-        	<input type="password" name="createPassword" id="createPassword" class="form-control" placeholder="Create Password" required>
-    	</div>
-    	<div class="form-group">
-    		<input type="password" name="confirmPassword" class="form-control" data-match="#createPassword" data-match-error="Whoops, these don't match" placeholder="Confirm Password" required>
-        	<div class="help-block with-errors"></div>
-    	</div>          
-    	<div class="form-inline">
-        	<a class="btn btn-default" href="/">Go Back</a>
-			&nbsp
-			&nbsp
-        	<button type="submit" class="btn btn-primary">Sign Up</button>
-    	</div>
+        <div class="form-group">
+          <input type="password" name="createPassword" id="createPassword" class="form-control" placeholder="Create Password" required>
+        </div>
+    
+        <div class="form-group">
+          <input type="password" name="confirmPassword" class="form-control" data-match="#createPassword" data-match-error="Whoops, these don't match" placeholder="Confirm Password" required>
+          <div class="help-block with-errors"></div>
+        </div>          
+
+        <div class="form-inline justify-content-end">
+          <a class="btn btn-default" href="/">Go Back</a>
+          <button type="submit" class="btn btn-primary">Sign Up</button>
+        </div>
     </form>
+  </div>
 </div>
-

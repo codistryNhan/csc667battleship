@@ -1,0 +1,79 @@
+<div class="container">
+
+  <div class="lobby-header row">
+
+    <span class="col-2"> Lobby </span>
+    <span class="col"></span>
+    <a id="lobbyRefreshButton" class="col-2 btn btn-success mr-3" href="">Refresh</a>
+    <a id="createRoomButton" class="col-2 btn btn-primary" href="">Create Room</a>
+
+  </div>
+
+  <div class="row">
+
+    <div class="col-9 border-silver room-container">
+      <ul>
+        {{#each gameRoom as | room |}}
+            <li class="room-item"> Room <span id="roomNum">{{room.id}}</span> - Player 1: {{#if room.player1}} {{room.player1}} {{else}} <button id="joinPlayer1Button" class="btn btn-primary">Join</button> {{/if}} ---------- 
+                                    Player 2: {{#if room.player2}} {{room.player2}} {{else}} <button id="joinPlayer2Button" class="btn btn-primary">Join</button> {{/if}}</li>
+        {{/each}}
+      </ul>
+    </div>
+
+    <div class="col-3 border-silver user-list-container">
+
+    </div>
+
+  </div>
+
+  <div class="row border-silver chat-container">
+
+  </div>
+
+
+</div>
+<script>
+
+  let createRoomButton = document.getElementById('createRoomButton');
+  let lobbyRefreshButton = document.getElementById('lobbyRefreshButton');
+  let joinPlayer1Button = document.getElementById('joinPlayer1Button');
+  let joinPlayer2Button = document.getElementById('joinPlayer2Button');
+  let roomNum;
+
+  if(document.getElementById('roomNum')){
+    roomNum = document.getElementById('roomNum').innerHTML;
+  }
+
+  if(joinPlayer1Button){
+  
+    joinPlayer1Button.addEventListener('click', (e)=>{
+      e.preventDefault();
+
+      fetch('/joinRoomPlayer1/' + roomNum, {
+        credentials: 'include',
+        method: 'post',
+      })
+    })
+
+  } 
+
+  createRoomButton.addEventListener('click', (e)=> {
+    e.preventDefault();
+
+    fetch('/createRoom', {
+      credentials: 'include',
+      method: 'post',
+    });
+
+  });
+
+
+  lobbyRefreshButton.addEventListener('click', (e)=>{
+    e.preventDefault();
+
+    fetch('/lobby', {
+      credentials: 'include',
+    });
+  });
+
+</script>

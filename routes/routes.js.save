@@ -1,0 +1,82 @@
+var express = require('express');
+var router = express.Router();
+var Users = require('../models/Users');
+
+router.get('/', function(request,response){
+
+  response.render('index', {
+  });
+
+})
+
+router.get('/login', function(request,response){
+
+  response.render('login', {
+  });
+
+})
+
+router.post('/login', function(request,response){
+
+  var username = request.body.username;
+  var password = request.body.password;
+
+  var user = new Users();
+
+  user.login(username, password)
+  .then( result => {
+
+    if(result){
+      response.locals.session.username = username;
+      response.render('index');
+    } else {
+      response.render('login');
+    }
+
+  })
+
+})
+
+router.get('/register', function(request,response){
+
+  response.render('register', {
+  });
+
+})
+
+router.post('/register', function(request,response){
+
+  var username = request.body.username;
+  var email = request.body.email;
+  var createPassword = request.body.createPassword;
+  var confirmPassword = request.body.confirmPassword;
+
+  var user = new Users();
+  user.register(username, confirmPassword, email)
+    .then( () => {
+      response.render('success');
+    });
+
+})
+
+router.get('/signout', function(request,response){
+
+  response.locals.session.destroy( ()=> {
+    response.redirect('/');
+  });
+
+})
+
+router.get('/lobby', function(request,response){
+
+  response.render('lobby');
+})
+
+router.get('/createRoom', function(request,response){
+
+  //create a row in create_room table, with player_1's id
+
+
+})
+
+module.exports = router;

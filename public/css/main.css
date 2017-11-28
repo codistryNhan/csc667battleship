@@ -1,0 +1,68 @@
+/* Imported Fonts */
+/* font-family: 'Oswald', sans-serif; */
+body,h1,h2,h3,h4,h5,h6,p,a,ul,li,img{
+  padding:0;
+  margin:0;
+}
+
+
+.navbar-brand{
+  font-family: 'Oswald', sans-serif;
+  font-weight:700;
+}
+
+nav{
+  font-family: 'Oswald', sans-serif;
+  font-weight:400;
+  margin-bottom:50px;
+}
+
+.form{
+  padding:25px;
+  border: .2rem solid silver;
+}
+
+
+.room-container{
+  height:500px;
+  overflow-y:scroll;
+  border-top:solid 2px silver;
+  border-left:solid 2px silver
+
+}
+
+.room-item{
+  font-size:18px;
+  color:white;
+  list-style:none;
+  text-decoration:none;
+  background-color:silver;
+  border-bottom:solid 2px white;
+  padding:5px;
+  display:block;
+}
+
+.room-item:hover{
+  text-decoration:none;
+  background-color:gray;
+  color:white;
+}
+
+.user-list-container{
+  height:500px;
+  overflow-y:scroll;
+  border-right:solid 2px silver;
+  border-top:solid 2px silver;
+  border-left:solid 2px silver;
+}
+
+.chat-container{
+  height:200px;
+  overflow-y:scroll;
+  border:solid 2px silver;
+}
+
+.lobby-header{
+  font-size:24px;
+  padding:12px 0px;
+}
