@@ -1,6 +1,6 @@
 /* Imported Fonts */
 /* font-family: 'Oswald', sans-serif; */
-body,h1,h2,h3,h4,h5,h6,p,a,ul,li,img{
+body,h1,h2,h3,h4,h5,h6,p,a,ul,li,img,td,th{
   padding:0;
   margin:0;
 }
@@ -65,4 +65,16 @@ nav{
 .lobby-header{
   font-size:24px;
   padding:12px 0px;
+}
+
+
+
+/* Game Board CSS */
+
+.gameboard th{
+  padding:10px 17px;
+}
+
+.gameboard td{
+  border:black solid 1px;
 }
