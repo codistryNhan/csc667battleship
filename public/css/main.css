@@ -71,10 +71,11 @@ nav{
 
 /* Game Board CSS */
 
-.gameboard th{
-  padding:10px 17px;
+#gameboard td{
+  border: solid 1px black;
+  padding:30px;
 }
 
-.gameboard td{
-  border:black solid 1px;
+.select-ships button{
+  min-width:110px;
 }
