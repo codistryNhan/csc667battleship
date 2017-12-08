@@ -100,9 +100,10 @@
     fetch('lobby/createRoom', {
       method:'post',
       credentials: 'include',
+    }).then( ()=>{
+      socket.emit('create-room');
     })
 
-    socket.emit('create-room');
   })
 
   socket.on('created-room', (room)=>{

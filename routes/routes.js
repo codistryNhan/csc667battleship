@@ -83,6 +83,7 @@ router.post('/lobby/createRoom', (req, res)=>{
 
   var gameroom = new GameRoom();
   gameroom.createRoom();
+  res.sendStatus(200);
 
 })
 
