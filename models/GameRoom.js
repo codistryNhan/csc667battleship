@@ -1,3 +1,4 @@
+
 let db = require('../db');
 
 class GameRoom{
@@ -13,7 +14,11 @@ class GameRoom{
   }
 
   getRooms(){
-    return db.any('select game_room.id, game_room.player1 FROM game_room');
+    return db.any('SELECT game_room.id, game_room.player1 FROM game_room');
+  }
+
+  getLastRoom(){
+    return db.any('SELECT id FROM game_room ORDER BY id DESC');
   }
 
   joinRoomPlayer1(playerName, roomNumber){

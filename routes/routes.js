@@ -79,7 +79,7 @@ router.get('/lobby', function(req,res){
 
 })
 
-router.post('/createRoom', (req, res)=>{
+router.post('/lobby/createRoom', (req, res)=>{
 
   var gameroom = new GameRoom();
   gameroom.createRoom();

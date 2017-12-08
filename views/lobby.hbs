@@ -4,15 +4,15 @@
 
     <span class="col-2"> Lobby </span>
     <span class="col"></span>
-    <a id="lobbyRefreshButton" class="col-2 btn btn-success mr-3" href="">Refresh</a>
-    <a id="createRoomButton" class="col-2 btn btn-primary" href="">Create Room</a>
+    <button id="lobbyRefreshButton" class="col-2 btn btn-success mr-3">Refresh</button>
+    <button id="createRoomButton" class="col-2 btn btn-primary">Create Room</button>
 
   </div>
 
   <div class="row">
 
-    <div class="col-9 room-container">
-      <ul>
+    <div class="col-9 room-list">
+      <ul id="room-list">
         {{#each gameRoom as | room |}}
             <li class="room-item"> Room <span id="roomNum">{{room.id}}</span> - Player 1: {{#if room.player1}} {{room.player1}} {{else}} <button id="joinPlayer1Button" class="btn btn-primary">Join</button> {{/if}} ---------- 
                                     Player 2: {{#if room.player2}} {{room.player2}} {{else}} <button id="joinPlayer2Button" class="btn btn-primary">Join</button> {{/if}}</li>
@@ -40,6 +40,7 @@
 <script src="js/socket.io.js"></script>
 <script>
 
+  /* LOBBY CHAT */
   let socket = io('http://138.197.217.228:3000/')
   let messageSend = document.getElementById('message-send');
   let username = '{{session.username}}';
@@ -90,7 +91,31 @@
     chatBox.scrollTop = chatBox.scrollHeight;
   })
 
+  /* LOBBY CHAT END */
 
+  /* Creating rooms */
+  let createRoomButton = document.getElementById('createRoomButton');
+
+  createRoomButton.addEventListener('click', ()=>{
+    fetch('lobby/createRoom', {
+      method:'post',
+      credentials: 'include',
+    })
+
+    socket.emit('create-room');
+  })
+
+  socket.on('created-room', (room)=>{
+    let roomList = document.getElementById('room-list');
+    let roomItem = document.createElement('li');
+    roomItem.setAttribute('class', 'room-item');
+    let roomId = room.id;
+    roomItem.innerHTML = `Room <span id="roomNum">${roomId}</span> - Player 1:  <button id="joinPlayer1Button" class="btn btn-primary">Join</button> ---------- Player 2: <button id="joinPlayer2Button" class="btn btn-primary">Join</button>`;
+    
+    roomList.appendChild(roomItem);
+  })
+  
+  /* Creating rooms end */
 
   lobbyRefreshButton.addEventListener('click', (e)=>{
     e.preventDefault();
