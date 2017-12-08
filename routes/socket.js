@@ -3,7 +3,7 @@ module.exports = function(io){
   let express = require('express');
   let router = express.Router();
   let users = [];
-  let GameRoom = require('../models/GameRoom');
+  let Lobby = require('../models/Lobby');
 
   io.on('connection', (socket)=>{
     socket.on('lobby-connect', (data)=>{
@@ -36,9 +36,9 @@ module.exports = function(io){
     });
 
     socket.on('create-room', ()=>{
-      let gameroom = new GameRoom();
+      let lobby = new Lobby();
 
-      gameroom.getLastRoom().then( result =>{
+      lobby.getLastRoom().then( result =>{
         let roomId = result[0].id;
 
         io.emit('created-room', {

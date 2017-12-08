@@ -1,7 +1,7 @@
-var express = require('express');
-var router = express.Router();
-var Users = require('../models/Users');
-var GameRoom = require('../models/GameRoom');
+let express = require('express');
+let router = express.Router();
+let Users = require('../models/Users');
+let Lobby = require('../models/Lobby');
 
 router.get('/', function(req,res){
 
@@ -17,10 +17,10 @@ router.get('/login', function(req,res){
 
 router.post('/login', function(req,res){
 
-  var username = req.body.username;
-  var password = req.body.password;
+  let username = req.body.username;
+  let password = req.body.password;
 
-  var user = new Users();
+  let user = new Users();
 
   user.login(username, password)
   .then( result => {
@@ -44,12 +44,12 @@ router.get('/register', function(req,res){
 
 router.post('/register', function(req,res){
 
-  var username = req.body.username;
-  var email = req.body.email;
-  var createPassword = req.body.createPassword;
-  var confirmPassword = req.body.confirmPassword;
+  let username = req.body.username;
+  let email = req.body.email;
+  let createPassword = req.body.createPassword;
+  let confirmPassword = req.body.confirmPassword;
 
-  var user = new Users();
+  let user = new Users();
   user.register(username, confirmPassword, email)
     .then( () => {
       res.render('success');
@@ -67,11 +67,11 @@ router.get('/signout', function(req,res){
 
 router.get('/lobby', function(req,res){
 
-  var gameroom = new GameRoom();
+  let lobby = new Lobby();
 
-  gameroom.getRooms().then( result => {
+  lobby.getRooms().then( result => {
     res.render('lobby', {
-    gameRoom: result,
+    lobby: result,
 
     });
 
@@ -81,31 +81,48 @@ router.get('/lobby', function(req,res){
 
 router.post('/lobby/createRoom', (req, res)=>{
 
-  var gameroom = new GameRoom();
-  gameroom.createRoom();
+  let lobby = new Lobby();
+  lobby.createRoom();
   res.sendStatus(200);
 
 })
 
+/*
 router.get('/deleteRoom/:roomNumber', (req,res)=>{
   var roomNumber = req.params.roomNumber;
 
   var gameroom = new GameRoom();
   gameroom.deleteRoom(roomNumber);
 
+})*/
+
+router.post('/lobby/player1Join/:roomNumber', (req,res)=>{
+  let username = res.locals.session.username;
+  let roomNumber = req.params.roomNumber;
+
+  let lobby = new Lobby();
+  lobby.player1Join(username, roomNumber).then(()=>{
+    res.sendStatus(200);
+  });
+
 })
 
-router.post('/joinRoomPlayer1/:roomNumber', (req,res)=>{
-  var username = res.locals.session.username;
-  var roomNumber = req.params.roomNumber;
+router.post('/lobby/player2Join/:roomNumber', (req,res)=>{
+  let username = res.locals.session.username;
+  let roomNumber = req.params.roomNumber;
 
-  var gameroom = new GameRoom();
-  return gameroom.joinRoomPlayer1(username, roomNumber);
+  let lobby = new Lobby();
+  lobby.player2Join(username, roomNumber).then(()=>{
+    res.sendStatus(200);
+  })
 
 })
 
-router.get('/game', (req,res)=>{
-  res.render('game');
+
+router.get('/game/:gameId', (req,res)=>{
+  let gameId = req.params.gameId;
+
+  res.send(req.params.gameId);
 })
 
 router.get('/test', (req,res)=>{
