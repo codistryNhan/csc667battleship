@@ -11,7 +11,7 @@
 
   <div class="row">
 
-    <div class="col-9 border-silver room-container">
+    <div class="col-9 room-container">
       <ul>
         {{#each gameRoom as | room |}}
             <li class="room-item"> Room <span id="roomNum">{{room.id}}</span> - Player 1: {{#if room.player1}} {{room.player1}} {{else}} <button id="joinPlayer1Button" class="btn btn-primary">Join</button> {{/if}} ---------- 
@@ -20,52 +20,76 @@
       </ul>
     </div>
 
-    <div class="col-3 border-silver user-list-container">
+    <div id="user-list" class="col-3 user-list-container">
 
     </div>
 
   </div>
 
-  <div class="row border-silver chat-container">
+  <div class="row">
+  
+    <div id="chat-box" class="col chat-container">
+    </div>
+  
+    <input class="form-control" type="text" id="message" placeholder="Enter Message"></input><button class="btn btn-primary" id="message-send">Send</button>
 
   </div>
 
 
 </div>
+<script src="js/socket.io.js"></script>
 <script>
 
-  let createRoomButton = document.getElementById('createRoomButton');
-  let lobbyRefreshButton = document.getElementById('lobbyRefreshButton');
-  let joinPlayer1Button = document.getElementById('joinPlayer1Button');
-  let joinPlayer2Button = document.getElementById('joinPlayer2Button');
-  let roomNum;
+  let socket = io('http://138.197.217.228:3000/')
+  let messageSend = document.getElementById('message-send');
+  let username = '{{session.username}}';
 
-  if(document.getElementById('roomNum')){
-    roomNum = document.getElementById('roomNum').innerHTML;
-  }
+  //Load Users onto list
+  socket.emit('lobby-connect', {
 
-  if(joinPlayer1Button){
-  
-    joinPlayer1Button.addEventListener('click', (e)=>{
-      e.preventDefault();
+    username:username,
 
-      fetch('/joinRoomPlayer1/' + roomNum, {
-        credentials: 'include',
-        method: 'post',
+  })
+
+  socket.on('load-users', (data)=>{
+    if(data.users){
+      let userList = document.getElementById('user-list');
+      userList.innerHTML = '';
+      data.users.forEach((user)=>{
+
+        let username = document.createElement('div');
+        username.innerHTML = user.username;
+
+        userList.append(username);
       })
-    })
+    }
+  })
 
-  } 
-
-  createRoomButton.addEventListener('click', (e)=> {
+  //Send message on click Send
+  messageSend.addEventListener('click', (e)=>{
     e.preventDefault();
 
-    fetch('/createRoom', {
-      credentials: 'include',
-      method: 'post',
-    });
+    let message = document.getElementById('message').value;
 
-  });
+    socket.emit('message-send', {
+      username: username,
+      message: message,
+    })
+
+    document.getElementById('message').value = '';
+  })
+
+  //Put message on chat box
+  socket.on('message-sent', (data)=>{
+    let chatBox = document.getElementById('chat-box');
+    let message = document.createElement('div');
+    message.innerHTML = data.username + ": " + data.message;
+
+    chatBox.appendChild(message);
+
+    chatBox.scrollTop = chatBox.scrollHeight;
+  })
+
 
 
   lobbyRefreshButton.addEventListener('click', (e)=>{

@@ -107,11 +107,10 @@ router.get('/game', (req,res)=>{
   res.render('game');
 })
 
-router.get('/test', (req, res)=>{
+router.get('/test', (req,res)=>{
 
-  console.log(res.session);
+  res.render('test');
 
 })
-
 
 module.exports = router;
