@@ -9,6 +9,7 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var session = require('express-session');
+var socketIo = require('socket.io');
 
 var routes = require('./routes/routes');
 
@@ -26,13 +27,26 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-app.use(session({ secret: 'keyboard cat', cookie: { maxAge: 604800000 /* a week */ }, saveUninitialized: true, resave:false, }));
 
+//Use Sessions
+app.use(session({ secret: 'keyboard cat', cookie: { maxAge: 604800000 /* a week */ }, saveUninitialized: true, resave:false, }));
 app.use('/', function(req,res,next){
   res.locals.session = req.session;
   next();
 })
 
+//Use Socket.io
+var io = socketIo();
+app.io = io;
+var socket = require('./routes/socket')(io);
+
+app.use('/', socket, function(req,res,next){
+
+  next();
+
+})
+
+//General RESTFUL api
 app.use('/', routes);
 
 // catch 404 and forward to error handler

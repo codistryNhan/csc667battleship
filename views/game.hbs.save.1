@@ -1,16 +1,13 @@
 <div class="container">
-  <h1>Room {{gameId}}</h1>
-  <div class="row mb-4">
+  <div class="row mb-3">
     <div class="col">
-      <h1>Player 1:<span id="player1Name">{{#if player1}} {{player1}} {{else}} Waiting for player... {{/if}}</span></h1>
+      <h1>Player 1:{{#if }}</h1>
     </div>
     <div class="col">
-      <h1>Player 2:<span id="player2Name">{{#if player2}} {{player2}} {{else}} Waiting for player... {{/if}}</span></h1>
+      <h1>Player 2:</h1>
     </div>
   </div>
-
-  <!-- Gameboard  -->
-  <div class="row mb-4">
+  <div class="row">
     <div id="gameboard">
     </div>
 
@@ -52,80 +49,11 @@
     </div>
 
   </div>
-
-  <!-- Chat Box -->
-  <div class="row">
-    <div id="chat-box" class="col chat-container mb-2">
-    </div>
-
-    <div class="input-group">
-      <input id="message" type="text" class="form-control" placeholder="Get Rekt">
-      <span class="input-group-btn"><button id="message-send" class="btn btn-secondary">Send</button></span>
-     </div>
-
-  </div>
 </div>
 
-<script src="/js/socket.io.js"></script>
 <script>
-  /* SOCKET EVENTS */
-  let socket = io('http://138.197.217.228:3000/game/{{gameId}}')
-
-  socket.on('player-connected', (data)=>{
-    let player1NameSpan = document.getElementById('player1Name');
-    let player2NameSpan = document.getElementById('player2Name');
-    let player1 = data.player1;
-    let player2 = data.player2;
-
-
-    if(player1 !== null){
-      player1NameSpan.innerHTML = player1;
-    }
-
-    if(player2 !== null){
-      player2NameSpan.innerHTML = player2;
-    }
-    
-  })
-
-  let messageSend = document.getElementById('message-send');
-
-  messageSend.addEventListener('click', ()=>{
-    let inputBox = document.getElementById('message');
-    let message = inputBox.value;
-
-    let username = '{{session.username}}';
-
-    socket.emit('message-send', {
-      username: username,
-      message: message
-    })
-
-    inputBox.value = '';
-    
-  })
-
-  socket.on('message-sent', (data)=>{
-    let chatBox = document.getElementById('chat-box');
-    let message = data.message;
-    let username = data.username;
-
-    let chatMessage = document.createElement('p');
-    chatMessage.innerHTML = username + ': ' +message;
-    
-    chatBox.appendChild(chatMessage);
-  })
-  
-  /* SOCKET EVENTS END */
-  
-  /* INITIALIZE GAME */
-
   createGameBoard(10);
-  let ships = [];
-  let positionsAll = [];
-  
-  /* SHIP BUTTONS */
-
+  let positions = [];
   // Destroyer
   let destroyerHorizontal = document.getElementById('destroyer-horizontal');
   destroyerHorizontal.addEventListener('click', () => {
@@ -171,7 +99,7 @@
     cruiserVertical.setAttribute('data-selected', '');
   })
 
-  //Battleship
+  //Battleshikp
   let battleshipHorizontal = document.getElementById('battleship-horizontal');
   battleshipHorizontal.addEventListener('click', () => {
     battleshipHorizontal.setAttribute('data-orientation', 'horizontal');
@@ -201,10 +129,6 @@
     carrierVertical.setAttribute('data-selected', '');
   })
 
-  /* SHIP BUTTONS END */
-
-  /* SELECTING POSITIONS */
-
   let cells = document.getElementsByClassName("cell");
 
   [].forEach.call(cells, (cell) => {
@@ -215,11 +139,6 @@
         let shipType = selected.getAttribute('data-ship');
         let currentPosition = parseInt(cell.getAttribute('data-position'));
         let shipLength = 0;
-        let shipObj = {};
-        let positions = [];
-
-        shipObj.shipType = shipType;
-       
 
         switch (shipType) {
           case 'destroyer':
@@ -260,7 +179,6 @@
             for (let i = 0; i < shipLength; i++) {
               cells[currentPosition].style.backgroundColor = 'red';
               positions.push(currentPosition);
-              positionsAll.push(currentPosition);
               currentPosition++;
             }
             console.log(positions);
@@ -272,24 +190,15 @@
             for (let i = 0; i < shipLength; i++) {
               cells[currentPosition].style.backgroundColor = 'red';
               positions.push(currentPosition);
-              positionsAll.push(currentPosition);
               currentPosition += 10;
             }
+            console.log(positions);
             selected.removeAttribute('data-selected');
             break;
         }
-
-        shipObj.positions = positions;
-        ships.push(shipObj);
-        console.log(ships);
-        console.log(positionsAll);
       }
 
     });
-
-    /* SELECTING POSITIONS END */
-
-    /* GAMEBOARD HOVER OVER EFFECT */
 
     cell.addEventListener('mouseover', () => {
       if (!(document.querySelector('[data-selected]') === null)) {
@@ -381,7 +290,7 @@
             case 'horizontal':
 
               for (let i = 0; i < shipLength; i++) {
-                if (!positionsAll.includes(currentPosition)) {
+                if (!positions.includes(currentPosition)) {
                   if(cells[currentPosition] != undefined){
                     cells[currentPosition].style.backgroundColor = 'white';
                   }
@@ -393,7 +302,7 @@
 
             case 'vertical':
               for (let i = 0; i < shipLength; i++) {
-                if (!positionsAll.includes(currentPosition)) {
+                if (!positions.includes(currentPosition)) {
                   if(cells[currentPosition] != undefined){
                     cells[currentPosition].style.backgroundColor = 'white';
                   }
@@ -408,15 +317,10 @@
       });
     });
   });
-  /* GAMEBOARD HOVER EFFECT END */
-
-  /* RESET BUTTON */
 
   let resetButton = document.getElementById('reset');
   resetButton.addEventListener('click', ()=>{
-    positionsAll = [];
-    ships = [];
-
+    positions = [];
     [].forEach.call(cells, (cell)=>{
       cell.style.backgroundColor = 'white';
     })
@@ -436,9 +340,8 @@
     let carrierReady = document.getElementById('carrier-ready');
     carrierReady.innerHTML = '';
   })
-  /* RESET BUTTON END */
 
-  /* CREATES GAMEBOARD */
+
   //Creates a gameboard of input size
   //Each cell has of a class of 'cell' and 'data-position'
   function createGameBoard(size) {
@@ -481,6 +384,4 @@
 
     main.appendChild(gameboard);
   }
-
-  /* CREATES GAMEBOARD END */
 </script>

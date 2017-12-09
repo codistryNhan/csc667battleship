@@ -13,8 +13,8 @@
     <div class="col-9 room-list" id="room-list-container">
       <ul id="room-list">
         {{#each lobby as | room |}}
-            <li class="room-item"> Room <span class="roomNum">{{room.id}}</span> - Player 1:<span class="player1Name">{{#if room.player1}} {{room.player1}} </span> {{else}}</span> <button data-room-id="{{room.id}}" class="btn btn-primary player1Join">Join</button> {{/if}} ---------- 
-                                    Player 2: <span class="player2Name">{{#if room.player2}} {{room.player2}}</span> {{else}}</span> <button data-room-id="{{room.id}}" class="btn btn-primary player2Join">Join</button> {{/if}}</li>
+            <li class="room-item"> Room <span class="roomNum">{{room.id}}</span> - Player 1:<span class="player1Name"></span> {{#if room.player1}} {{room.player1}} {{else}} <button data-room-id="{{room.id}}" class="btn btn-primary player1Join">Join</button> {{/if}} ---------- 
+                                    Player 2: <span class="player2Name"></span>{{#if room.player2}} {{room.player2}} {{else}} <button data-room-id="{{room.id}}" class="btn btn-primary player2Join">Join</button> {{/if}}</li>
         {{/each}}
       </ul>
     </div>
@@ -26,13 +26,11 @@
   </div>
 
   <div class="row">
-    <div id="chat-box" class="col chat-container mb-2">
+  
+    <div id="chat-box" class="col chat-container">
     </div>
-
-    <div class="input-group">
-      <input type="text" id="message" class="form-control" placeholder="Get Rekt">
-      <span class="input-group-btn" id="message-send"><button id="message-send" class="btn btn-secondary">Send</button></span>
-     </div>
+  
+    <input class="form-control" type="text" id="message" placeholder="Enter Message"></input><button class="btn btn-primary" id="message-send">Send</button>
 
   </div>
 
@@ -65,50 +63,6 @@
         userList.append(username);
       })
     }
-  })
-
-  socket.on('player1-join', (data)=>{
-    let roomId = data.roomId;
-    let player1Name = data.player1name;
-    let rooms = document.getElementsByClassName('room-item');
-
-    [].forEach.call(rooms, (room)=>{
-      let pageRoomNum = room.getElementsByClassName('roomNum');      
-      pageRoomNum = parseInt(pageRoomNum[0].innerHTML);
-
-      if(pageRoomNum === roomId){
-        let player1NameSpan = room.getElementsByClassName('player1Name');
-        player1NameSpan = player1NameSpan[0];
-        player1NameSpan.innerHTML = " " + player1Name;
-
-        let player1Button = room.getElementsByClassName('player1Join');
-        player1Button = player1Button[0];
-        room.removeChild(player1Button);
-      }
-    })
-    
-  })
-
-  socket.on('player2-join', (data)=>{
-    let roomId = data.roomId;
-    let player2Name = data.player2name;
-    let rooms = document.getElementsByClassName('room-item');
-
-    [].forEach.call(rooms, (room)=>{
-      let pageRoomNum = room.getElementsByClassName('roomNum');
-      pageRoomNum = parseInt(pageRoomNum[0].innerHTML);
-
-      if(pageRoomNum === roomId){
-        let player2NameSpan = room.getElementsByClassName('player2Name');
-        player2NameSpan = player2NameSpan[0];
-        player2NameSpan.innerHTML = " " + player2Name;
-
-        let player2Button = room.getElementsByClassName('player2Join');
-        player2Button = player2Button[0];
-        room.removeChild(player2Button);
-      }
-    })
-
   })
 
   //Send message on click Send
@@ -157,7 +111,7 @@
     let roomItem = document.createElement('li');
     roomItem.setAttribute('class', 'room-item');
     let roomId = room.id;
-    roomItem.innerHTML = `Room <span class="roomNum">${roomId}</span> - Player 1:<span class="player1Name"></span>  <button data-room-id="${roomId}"class="btn btn-primary player1Join">Join</button> ---------- Player 2:<span class="player2Name"></span> <button data-room-id="${roomId}" class="btn btn-primary player2Join">Join</button>`;
+    roomItem.innerHTML = `Room <span class="roomNum">${roomId}</span> - Player 1:<span class="player1Name"><span>  <button data-room-id="${roomId}"class="btn btn-primary player1Join">Join</button> ---------- Player 2:<span class="player2Name"></span> <button data-room-id="${roomId}" class="btn btn-primary player2Join">Join</button>`;
     
     roomList.appendChild(roomItem);
     setJoinButtons();
@@ -182,8 +136,8 @@
           method:'post',
           credentials:'include',
         }).then(()=>{
-          socket.emit('player1-click-join', {
-            roomId: roomId,
+          socket.emit('player1Join', {
+            roomId: roomId
           })
           window.open('/game/' + roomId);
         })
@@ -199,9 +153,6 @@
           method:'post',
           credentials:'include',
         }).then(()=>{
-          socket.emit('player2-click-join', {
-            roomId: roomId,
-          })
           window.open('/game/' + roomId);
         })
 
