@@ -132,7 +132,7 @@
   let cells = document.getElementsByClassName("cell");
 
   [].forEach.call(cells, (cell) => {
-    cell.addEventListener('click', () => {
+    cell.addEventListener('click', (e) => {
       if (!(document.querySelector('[data-selected]') === null)) {
         let selected = document.querySelector('[data-selected]');
         let shipOrientation = selected.getAttribute('data-orientation');
@@ -235,14 +235,19 @@
           case 'horizontal':
 
             for (let i = 0; i < shipLength; i++) {
-              cells[currentPosition++].style.backgroundColor = 'red';
+              if(cells[currentPosition] != undefined){
+                cells[currentPosition].style.backgroundColor = 'red';
+              }
+              currentPosition++;
             }
 
             break;
 
           case 'vertical':
             for (let i = 0; i < shipLength; i++) {
-              cells[currentPosition].style.backgroundColor = 'red';
+              if(cells[currentPosition] != undefined){
+                    cells[currentPosition].style.backgroundColor = 'red';
+              }
               currentPosition += 10;
             }
 
@@ -286,7 +291,9 @@
 
               for (let i = 0; i < shipLength; i++) {
                 if (!positions.includes(currentPosition)) {
-                  cells[currentPosition].style.backgroundColor = 'white';
+                  if(cells[currentPosition] != undefined){
+                    cells[currentPosition].style.backgroundColor = 'white';
+                  }
                 }
                 currentPosition++;
               }
@@ -296,7 +303,9 @@
             case 'vertical':
               for (let i = 0; i < shipLength; i++) {
                 if (!positions.includes(currentPosition)) {
-                  cells[currentPosition].style.backgroundColor = 'white';
+                  if(cells[currentPosition] != undefined){
+                    cells[currentPosition].style.backgroundColor = 'white';
+                  }
                 }
                 currentPosition += 10;
               }

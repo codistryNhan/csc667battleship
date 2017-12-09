@@ -47,7 +47,37 @@ module.exports = function(io){
 
       })
     })
+
+    socket.on('player1-click-join', (data)=>{
+      let lobby = new Lobby();
+      let roomId = data.roomId;
+
+      lobby.getPlayer1Name(roomId).then((result)=>{
+        io.emit('player1-join', {
+          roomId: roomId,
+          player1name: result[0].player1,
+        })
+      });
+    })
+
+    socket.on('player2-click-join', (data)=>{
+      let lobby = new Lobby();
+      let roomId = data.roomId;
+
+      lobby.getPlayer2Name(roomId).then((result)=>{
+        io.emit('player2-join', {
+          roomId: roomId,
+          player2name: result[0].player2,
+        })
+      });
+    })
+
+
   })
+
+  function createNamespace(roomId){
+
+  }
 
   return router;
 }
