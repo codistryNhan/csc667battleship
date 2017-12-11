@@ -138,7 +138,7 @@ module.exports = function(io){
           }).then(()=>{
 
             //Randomly pick who starts
-            if( (Math.floor(Math.random * 2) + 1) === 1){
+            if( (Math.floor(Math.random() * 2) + 1) === 1){
               turn = player1;
             } else {
               turn = player2;
@@ -164,6 +164,8 @@ module.exports = function(io){
 
         //If shot is from player1
         if(player1 == data.playerName){
+          console.log("I am 1 " + player1positions);
+          console.log("I am 1 " + data.position);
 
           if(player2positions.includes(data.position)){
             let index = player2positions.indexOf(data.position);
@@ -180,10 +182,11 @@ module.exports = function(io){
             });
           }
 
-          if(!player2positions.length){
+          if(player2positions.length == 0){
             room.emit('game-over', {
               winner: player1,
             })
+            return;
           }
 
           room.emit('end-turn', {
@@ -192,6 +195,8 @@ module.exports = function(io){
 
         //If shot is from player2
         } else {
+          console.log("I am 2 " + player2positions);
+          console.log("I am 2 " + data.position);
 
           if(player1positions.includes(data.position)){
             let index = player1positions.indexOf(data.position);
@@ -208,10 +213,11 @@ module.exports = function(io){
             });
           }
 
-          if(!player1positions.length){
+          if(player1positions.length == 0){
             room.emit('game-over', {
               winner: player2,
             })
+            return;
           }
 
           room.emit('end-turn', {

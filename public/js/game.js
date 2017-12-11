@@ -187,7 +187,6 @@ class Game {
                 positionsAll.push(currentPosition);
                 currentPosition++;
               }
-              console.log(positions);
               selected.removeAttribute('data-selected');
 
               break;
@@ -205,8 +204,6 @@ class Game {
 
           shipObj.positions = positions;
           ships.push(shipObj);
-          console.log(ships);
-          console.log(positionsAll);
         }
 
       });
@@ -470,8 +467,12 @@ class Game {
     opponentBoard.appendChild(opponentGameBoard);
 
     //Create Div to under board
+    let rowB = document.createElement('div');
+    rowB.className = 'row';
     let buttonContainer = document.createElement('div');
     buttonContainer.className = 'button-container col text-center';
+    buttonContainer.id = 'button-container';
+    rowB.appendChild(buttonContainer);
 
     //Create button to submit position
     let submitPosition = document.createElement('button');
@@ -484,8 +485,11 @@ class Game {
     waitingOpponent.innerHTML = "Waiting on opponent...";
 
     //Attach both boards on to page
-    main.appendChild(playerBoard);
-    main.appendChild(opponentBoard);
+    let rowA = document.createElement('div');
+    rowA.className = "row";
+    rowA.appendChild(playerBoard);
+    rowA.appendChild(opponentBoard);
+    main.appendChild(rowA);
 
     loadShips(positions);
     mainGameLoop();
@@ -497,20 +501,26 @@ class Game {
       let opponentCells = document.getElementsByClassName('opponent-cell');
 
       [].forEach.call(opponentCells, cell =>{
+        let currentPosition = parseInt(cell.getAttribute('data-opponent-position'));
+
         cell.addEventListener('click', ()=>{
-          selectOpponentPosition = parseInt(cell.getAttribute('data-opponent-position'));
+          //selectOpponentPosition = parseInt(cell.getAttribute('data-opponent-position'));
+          selectOpponentPosition = currentPosition;
           cell.style.backgroundColor = 'red';
-          positionHistory.push(selectOpponentPosition);
+          positionHistory.push(currentPosition);
         });
 
         cell.addEventListener('mouseover', ()=>{
-          cell.style.backgroundColor = 'red';
+
+          if( !(positionHistory.includes(currentPosition)) ){
+            cell.style.backgroundColor = 'red';
+          }
+
         })
 
         cell.addEventListener('mouseout', ()=>{
-          let currentPosition = parseInt(cell.getAttribute('data-opponent-positions'));
-      
-          if( !positionHistory.includes(currentPosition) ){
+
+          if( !(positionHistory.includes(currentPosition)) ){
             cell.style.backgroundColor = 'white';
           }
 
@@ -560,6 +570,8 @@ class Game {
       })
 
       socket.on('game-over', (data)=>{
+        console.log('WINNER');
+        let buttonContainer = document.getElementById('button-container');
         buttonContainer.innerHTML = data.winner + ' WINNER WINNER CHICKEN DINNER'; 
       })
 
