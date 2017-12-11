@@ -10,13 +10,16 @@
   </div>
 
   <!-- Gameboard  -->
-  <div class="row mb-4">
+  <div id="main" class="row mb-4">
     <div id="gameboard">
     </div>
 
     <div class="col">
-      <table class="table table-dark select-ships mt-5">
-        <tr><th><h2>Select Ships</h2></th></tr>
+      <table class="table table-dark select-ships mt-3">
+        <tr>
+          <th>
+            <h2>Select Ships</h2></th>
+        </tr>
         <tr>
           <td class="destroyer-container">Destroyer<span id="destroyer-ready" class="ml-2" style="font-size:36px;"></span></td>
           <td><button class="btn btn-primary" id="destroyer-horizontal">Horizontal</button></td>
@@ -61,40 +64,51 @@
     <div class="input-group">
       <input id="message" type="text" class="form-control" placeholder="Get Rekt">
       <span class="input-group-btn"><button id="message-send" class="btn btn-secondary">Send</button></span>
-     </div>
+    </div>
 
   </div>
 </div>
 
 <script src="/js/socket.io.js"></script>
+<script src="/js/game.js"></script>
 <script>
+  let username = '{{session.username}}';
+  let player1;
+  let player2;
+  let gameId = {{gameId}};
+
   /* SOCKET EVENTS */
   let socket = io('http://138.197.217.228:3000/game/{{gameId}}')
 
-  socket.on('player-connected', (data)=>{
+  socket.on('player-connected', (data) => {
     let player1NameSpan = document.getElementById('player1Name');
     let player2NameSpan = document.getElementById('player2Name');
-    let player1 = data.player1;
-    let player2 = data.player2;
+    player1 = data.player1;
+    player2 = data.player2;
+    let playerNum = 0;
+
+    if(username === player1){
+      playerNum = 1;
+    } else {
+      playerNum = 2;
+    }
 
 
-    if(player1 !== null){
+    if (player1 !== null) {
       player1NameSpan.innerHTML = player1;
     }
 
-    if(player2 !== null){
+    if (player2 !== null) {
       player2NameSpan.innerHTML = player2;
     }
-    
+
   })
 
   let messageSend = document.getElementById('message-send');
 
-  messageSend.addEventListener('click', ()=>{
+  messageSend.addEventListener('click', () => {
     let inputBox = document.getElementById('message');
     let message = inputBox.value;
-
-    let username = '{{session.username}}';
 
     socket.emit('message-send', {
       username: username,
@@ -102,385 +116,38 @@
     })
 
     inputBox.value = '';
-    
+
   })
 
-  socket.on('message-sent', (data)=>{
+  socket.on('message-sent', (data) => {
     let chatBox = document.getElementById('chat-box');
     let message = data.message;
     let username = data.username;
 
     let chatMessage = document.createElement('p');
-    chatMessage.innerHTML = username + ': ' +message;
-    
+    chatMessage.innerHTML = username + ': ' + message;
+
     chatBox.appendChild(chatMessage);
   })
-  
-  /* SOCKET EVENTS END */
-  
-  /* INITIALIZE GAME */
 
-  createGameBoard(10);
-  let ships = [];
-  let positionsAll = [];
-  
-  /* SHIP BUTTONS */
 
-  // Destroyer
-  let destroyerHorizontal = document.getElementById('destroyer-horizontal');
-  destroyerHorizontal.addEventListener('click', () => {
-    destroyerHorizontal.setAttribute('data-orientation', 'horizontal');
-    destroyerHorizontal.setAttribute('data-ship', 'destroyer');
-    destroyerHorizontal.setAttribute('data-selected', '');
-  });
+  let game = new Game();
+  game.setUsername(username);
+  game.setGameId(gameId);
+  game.setSocket(socket);
 
-  let destroyerVertical = document.getElementById('destroyer-vertical');
-  destroyerVertical.addEventListener('click', () => {
-    destroyerHorizontal.setAttribute('data-orientation', 'vertical');
-    destroyerHorizontal.setAttribute('data-ship', 'destroyer');
-    destroyerHorizontal.setAttribute('data-selected', '');
-  });
+  game.initializeGame();
 
-  //Submarine
-  let submarineHorizontal = document.getElementById('submarine-horizontal');
-  submarineHorizontal.addEventListener('click', () => {
-    submarineHorizontal.setAttribute('data-orientation', 'horizontal');
-    submarineHorizontal.setAttribute('data-ship', 'submarine');
-    submarineHorizontal.setAttribute('data-selected', '');
-  })
+  socket.on('start-game', (data) => {
 
-  let submarineVertical = document.getElementById('submarine-vertical');
-  submarineVertical.addEventListener('click', () => {
-    submarineVertical.setAttribute('data-orientation', 'vertical');
-    submarineVertical.setAttribute('data-ship', 'submarine');
-    submarineVertical.setAttribute('data-selected', '');
-  })
+    let ship_positions;
 
-  //Cruiser
-  let cruiserHorizontal = document.getElementById('cruiser-horizontal');
-  cruiserHorizontal.addEventListener('click', () => {
-    cruiserHorizontal.setAttribute('data-orientation', 'horizontal');
-    cruiserHorizontal.setAttribute('data-ship', 'cruiser');
-    cruiserHorizontal.setAttribute('data-selected', '');
-  })
-
-  let cruiserVertical = document.getElementById('cruiser-vertical');
-  cruiserVertical.addEventListener('click', () => {
-    cruiserVertical.setAttribute('data-orientation', 'vertical');
-    cruiserVertical.setAttribute('data-ship', 'cruiser');
-    cruiserVertical.setAttribute('data-selected', '');
-  })
-
-  //Battleship
-  let battleshipHorizontal = document.getElementById('battleship-horizontal');
-  battleshipHorizontal.addEventListener('click', () => {
-    battleshipHorizontal.setAttribute('data-orientation', 'horizontal');
-    battleshipHorizontal.setAttribute('data-ship', 'battleship');
-    battleshipHorizontal.setAttribute('data-selected', '');
-  })
-
-  let battleshipVertical = document.getElementById('battleship-vertical');
-  battleshipVertical.addEventListener('click', () => {
-    battleshipVertical.setAttribute('data-orientation', 'vertical');
-    battleshipVertical.setAttribute('data-ship', 'battleship');
-    battleshipVertical.setAttribute('data-selected', '');
-  })
-
-  //Carrier
-  let carrierHorizontal = document.getElementById('carrier-horizontal');
-  carrierHorizontal.addEventListener('click', () => {
-    carrierHorizontal.setAttribute('data-orientation', 'horizontal');
-    carrierHorizontal.setAttribute('data-ship', 'carrier');
-    carrierHorizontal.setAttribute('data-selected', '');
-  })
-
-  let carrierVertical = document.getElementById('carrier-vertical');
-  carrierVertical.addEventListener('click', () => {
-    carrierVertical.setAttribute('data-orientation', 'vertical');
-    carrierVertical.setAttribute('data-ship', 'carrier');
-    carrierVertical.setAttribute('data-selected', '');
-  })
-
-  /* SHIP BUTTONS END */
-
-  /* SELECTING POSITIONS */
-
-  let cells = document.getElementsByClassName("cell");
-
-  [].forEach.call(cells, (cell) => {
-    cell.addEventListener('click', (e) => {
-      if (!(document.querySelector('[data-selected]') === null)) {
-        let selected = document.querySelector('[data-selected]');
-        let shipOrientation = selected.getAttribute('data-orientation');
-        let shipType = selected.getAttribute('data-ship');
-        let currentPosition = parseInt(cell.getAttribute('data-position'));
-        let shipLength = 0;
-        let shipObj = {};
-        let positions = [];
-
-        shipObj.shipType = shipType;
-       
-
-        switch (shipType) {
-          case 'destroyer':
-            shipLength = 2;
-            let destroyerReady = document.getElementById('destroyer-ready');
-            destroyerReady.innerHTML = '&#10004;';
-            break;
-
-          case 'submarine':
-            shipLength = 3;
-            let submarineReady = document.getElementById('submarine-ready');
-            submarineReady.innerHTML = '&#10004;';
-            break;
-
-          case 'cruiser':
-            shipLength = 3;
-            let cruiserReady = document.getElementById('cruiser-ready');
-            cruiserReady.innerHTML = '&#10004;';
-            break;
-
-          case 'battleship':
-            shipLength = 4;
-            let battleshipReady = document.getElementById('battleship-ready');
-            battleshipReady.innerHTML = '&#10004;';
-            break;
-
-          case 'carrier':
-            shipLength = 5;
-            let carrierReady = document.getElementById('carrier-ready');
-            carrierReady.innerHTML = '&#10004;';
-            break;
-          default:
-        }
-
-        switch (shipOrientation) {
-          case 'horizontal':
-
-            for (let i = 0; i < shipLength; i++) {
-              cells[currentPosition].style.backgroundColor = 'red';
-              positions.push(currentPosition);
-              positionsAll.push(currentPosition);
-              currentPosition++;
-            }
-            console.log(positions);
-            selected.removeAttribute('data-selected');
-
-            break;
-
-          case 'vertical':
-            for (let i = 0; i < shipLength; i++) {
-              cells[currentPosition].style.backgroundColor = 'red';
-              positions.push(currentPosition);
-              positionsAll.push(currentPosition);
-              currentPosition += 10;
-            }
-            selected.removeAttribute('data-selected');
-            break;
-        }
-
-        shipObj.positions = positions;
-        ships.push(shipObj);
-        console.log(ships);
-        console.log(positionsAll);
-      }
-
-    });
-
-    /* SELECTING POSITIONS END */
-
-    /* GAMEBOARD HOVER OVER EFFECT */
-
-    cell.addEventListener('mouseover', () => {
-      if (!(document.querySelector('[data-selected]') === null)) {
-        let selected = document.querySelector('[data-selected]');
-        let shipOrientation = selected.getAttribute('data-orientation');
-        let shipType = selected.getAttribute('data-ship');
-        let currentPosition = parseInt(cell.getAttribute('data-position'));
-        let shipLength = 0;
-
-        switch (shipType) {
-          case 'destroyer':
-            shipLength = 2;
-            break;
-
-          case 'submarine':
-            shipLength = 3;
-            break;
-
-          case 'cruiser':
-            shipLength = 3;
-            break;
-
-          case 'battleship':
-            shipLength = 4;
-            break;
-
-          case 'carrier':
-            shipLength = 5;
-            break;
-          default:
-        }
-
-        switch (shipOrientation) {
-          case 'horizontal':
-
-            for (let i = 0; i < shipLength; i++) {
-              if(cells[currentPosition] != undefined){
-                cells[currentPosition].style.backgroundColor = 'red';
-              }
-              currentPosition++;
-            }
-
-            break;
-
-          case 'vertical':
-            for (let i = 0; i < shipLength; i++) {
-              if(cells[currentPosition] != undefined){
-                    cells[currentPosition].style.backgroundColor = 'red';
-              }
-              currentPosition += 10;
-            }
-
-            break;
-        }
-      }
-
-      cell.addEventListener('mouseout', () => {
-        if (!(document.querySelector('[data-selected]') === null)) {
-          let selected = document.querySelector('[data-selected]');
-          let shipOrientation = selected.getAttribute('data-orientation');
-          let shipType = selected.getAttribute('data-ship');
-          let currentPosition = parseInt(cell.getAttribute('data-position'));
-          let shipLength = 0;
-
-          switch (shipType) {
-            case 'destroyer':
-              shipLength = 2;
-              break;
-
-            case 'submarine':
-              shipLength = 3;
-              break;
-
-            case 'cruiser':
-              shipLength = 3;
-              break;
-
-            case 'battleship':
-              shipLength = 4;
-              break;
-
-            case 'carrier':
-              shipLength = 5;
-              break;
-            default:
-          }
-
-          switch (shipOrientation) {
-            case 'horizontal':
-
-              for (let i = 0; i < shipLength; i++) {
-                if (!positionsAll.includes(currentPosition)) {
-                  if(cells[currentPosition] != undefined){
-                    cells[currentPosition].style.backgroundColor = 'white';
-                  }
-                }
-                currentPosition++;
-              }
-
-              break;
-
-            case 'vertical':
-              for (let i = 0; i < shipLength; i++) {
-                if (!positionsAll.includes(currentPosition)) {
-                  if(cells[currentPosition] != undefined){
-                    cells[currentPosition].style.backgroundColor = 'white';
-                  }
-                }
-                currentPosition += 10;
-              }
-
-              break;
-          }
-        }
-
-      });
-    });
-  });
-  /* GAMEBOARD HOVER EFFECT END */
-
-  /* RESET BUTTON */
-
-  let resetButton = document.getElementById('reset');
-  resetButton.addEventListener('click', ()=>{
-    positionsAll = [];
-    ships = [];
-
-    [].forEach.call(cells, (cell)=>{
-      cell.style.backgroundColor = 'white';
-    })
-
-    let destroyerReady = document.getElementById('destroyer-ready');
-    destroyerReady.innerHTML = '';
-
-    let submarineReady = document.getElementById('submarine-ready');
-    submarineReady.innerHTML = '';
-
-    let cruiserReady = document.getElementById('cruiser-ready');
-    cruiserReady.innerHTML = '';
-
-    let battleshipReady = document.getElementById('battleship-ready');
-    battleshipReady.innerHTML = '';
-
-    let carrierReady = document.getElementById('carrier-ready');
-    carrierReady.innerHTML = '';
-  })
-  /* RESET BUTTON END */
-
-  /* CREATES GAMEBOARD */
-  //Creates a gameboard of input size
-  //Each cell has of a class of 'cell' and 'data-position'
-  function createGameBoard(size) {
-    let main = document.getElementById('gameboard');
-    let count = 0;
-    let gameboard = document.createElement('table');
-    gameboard.setAttribute('id', 'gameboard');
-
-    //creates the letters on top of game board A -> J
-    let firstRow = document.createElement('tr');
-    let emptyCell = document.createElement('th');
-    firstRow.appendChild(emptyCell);
-    let alphaIndex = 65;
-
-    for (let i = 0; i < 10; i++) {
-      let letterList = document.createElement('th');
-      letterList.setAttribute('class', 'text-center');
-      letterList.innerHTML = '&#' + alphaIndex++;
-      firstRow.appendChild(letterList);
-      gameboard.appendChild(firstRow);
+    if(username === player1){
+      ship_positions = data.player1positions;
+    } else {
+      ship_positions = data.player2positions;
     }
 
-    // creates the numbers on side and cells
-    for (let i = 0; i < size; i++) {
-      let row = document.createElement('tr');
-      let numList = document.createElement('th');
-      let index = i + 1;
-      numList.innerHTML = index;
-      row.appendChild(numList);
-
-      for (let k = 0; k < size; k++) {
-        let cell = document.createElement('td');
-        cell.setAttribute('data-position', count++);
-        cell.setAttribute('class', 'cell');
-        row.appendChild(cell);
-      }
-
-      gameboard.appendChild(row);
-    }
-
-    main.appendChild(gameboard);
-  }
-
-  /* CREATES GAMEBOARD END */
+    game.startGame(ship_positions);
+  })
 </script>

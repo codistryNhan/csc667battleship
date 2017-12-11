@@ -3,12 +3,13 @@ module.exports = function(io){
   let express = require('express');
   let router = express.Router();
   let users = [];
-  let Lobby = require('../models/Lobby');
+  let Lobby = require('../classes/Lobby');
+  let Game = require('../classes/Game');
 
   io.on('connection', (socket)=>{
     socket.on('lobby-connect', (data)=>{
 
-      let user = {
+    let user = {
         username: data.username,
         id: socket.id,
       }
@@ -41,6 +42,8 @@ module.exports = function(io){
       lobby.getLastRoom().then( result =>{
         let roomId = result[0].id;
 
+        createNamespace(roomId);
+
         io.emit('created-room', {
           id: roomId,
         })
@@ -58,6 +61,7 @@ module.exports = function(io){
           player1name: result[0].player1,
         })
       });
+
     })
 
     socket.on('player2-click-join', (data)=>{
@@ -75,7 +79,80 @@ module.exports = function(io){
 
   })
 
+  //Private sockets for individual rooms
   function createNamespace(roomId){
+    let room = io.of('/game/' + roomId);
+    let ready = 0;
+    let player1 = '';
+    let player2 = '';
+    let player1positions = [];
+    let player2positions = [];
+    let turn;
+
+    room.on('connection', (socket)=>{
+      let lobby = new Lobby();
+      lobby.getPlayersName(roomId).then( result =>{
+        //Set players as player1 and player2
+        player1 = result[0].player1;
+        player2 = result[0].player2;
+
+        room.emit('player-connected', {
+          player1: result[0].player1,
+          player2: result[0].player2,
+        })
+      });
+
+
+     socket.on('message-send', data => {
+
+       room.emit('message-sent', {
+         message: data.message,
+         username: data.username
+       })
+
+     });
+
+    socket.on('player-ready', (data)=>{
+      ready++;
+
+      if(ready === 1){
+        room.emit('message-sent', {
+          username: '<span style="color:green"><strong>SERVER</strong></span>',
+          message: '<span style="color:green;"><strong>' + data.username.toUpperCase() + ' IS READY</strong></span>',
+        })
+      }
+
+      if(ready === 2){
+        let game = new Game();
+
+        game.getShipPositions(roomId, player1).then( results =>{
+          results.forEach( result =>{
+            player1positions.push(result.ship_position);
+          })
+        }).then(()=>{
+
+          game.getShipPositions(roomId, player2).then( results =>{
+            results.forEach( result =>{
+              player2positions.push(result.ship_position);
+            })
+          }).then(()=>{
+            turn =  Math.floor(Math.random * 2) + 1;
+
+            room.emit('start-game', {
+              player1positions : player1positions,
+              player2positions : player2positions
+            });
+            ready = 0;
+
+          })
+
+        })
+
+      }
+
+    })
+
+   })
 
   }
 
