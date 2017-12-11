@@ -136,23 +136,93 @@ module.exports = function(io){
               player2positions.push(result.ship_position);
             })
           }).then(()=>{
-            turn =  Math.floor(Math.random * 2) + 1;
+
+            //Randomly pick who starts
+            if( (Math.floor(Math.random * 2) + 1) === 1){
+              turn = player1;
+            } else {
+              turn = player2;
+            }
 
             room.emit('start-game', {
               player1positions : player1positions,
-              player2positions : player2positions
+              player2positions : player2positions,
+              turn,
             });
             ready = 0;
 
+            })
+
           })
 
-        })
+        }
 
-      }
+      }) // socket.on('ready-player') end
 
-    })
+      //Check if selected position will hit a ship or miss
+      socket.on('check-position', (data)=>{
 
-   })
+        //If shot is from player1
+        if(player1 == data.playerName){
+
+          if(player2positions.includes(data.position)){
+            let index = player2positions.indexOf(data.position);
+
+            player2positions.splice(index, 1);
+
+            socket.emit('hit', {
+              position: data.position,
+            });
+
+          } else {
+            socket.emit('miss', {
+              position: data.position,
+            });
+          }
+
+          if(!player2positions.length){
+            room.emit('game-over', {
+              winner: player1,
+            })
+          }
+
+          room.emit('end-turn', {
+            turn: player2,
+          });
+
+        //If shot is from player2
+        } else {
+
+          if(player1positions.includes(data.position)){
+            let index = player1positions.indexOf(data.position);
+
+            player1positions.splice(index, 1);
+
+            socket.emit('hit', {
+              position: data.position,
+            });
+
+          } else {
+            socket.emit('miss', {
+              position: data.position,
+            });
+          }
+
+          if(!player1positions.length){
+            room.emit('game-over', {
+              winner: player2,
+            })
+          }
+
+          room.emit('end-turn', {
+            turn: player1,
+          });
+
+        }
+
+      })
+
+    }) //Room Socket end
 
   }
 

@@ -141,6 +141,7 @@
   socket.on('start-game', (data) => {
 
     let ship_positions;
+    game.setTurn(data.turn);
 
     if(username === player1){
       ship_positions = data.player1positions;

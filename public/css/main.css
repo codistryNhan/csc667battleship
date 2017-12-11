@@ -1,8 +1,13 @@
 /* Imported Fonts */
 /* font-family: 'Oswald', sans-serif; */
+/* Ocean color:#0060fc */
+/* Ship color:#0060fc */
+/* Shot color:#d80000 */ 
+
 body,h1,h2,h3,h4,h5,h6,p,a,ul,li,img,td,th{
   padding:0;
   margin:0;
+  font-family: 'Oswald', sans-serif;
 }
 
 
@@ -75,8 +80,34 @@ nav{
 #gameboard td{
   border: solid 1px black;
   padding:22px;
+  background-color:#0060fc;
 }
 
 .select-ships button{
   min-width:110px;
+}
+
+.button-container{
+  padding: 8px 12px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+#submit-position{
+  background-color: #343A40;
+  color: white;
+  display:block;
+  border:none;
+  width:460px;
+  padding: 15px 0px;
+}
+
+#waiting-opponent{
+  background-color: white;
+  color: #343a40;
+  display:block;
+  border:solid 2px #343a40;
+  width:460px;
+  padding: 15px 0px;
 }

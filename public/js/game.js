@@ -4,18 +4,22 @@ class Game {
     this.username;
     this.gameId;
     this.socket;
+    this.shipColor = '#7a7a7a';
+    this.oceanColor = '#0060fc';
+    this.shotColor = '#d80000';
+    this.turn;
   }
 
   setUsername(username){
     this.username = username;
   }
 
-  setGameId(gameId){
-    this.gameId = gameId;
-  }
-
   getUsername(){
     return this.username;
+  }
+
+  setGameId(gameId){
+    this.gameId = gameId;
   }
 
   getGameId(){
@@ -28,6 +32,14 @@ class Game {
 
   getSocket(){
     return this.socket;
+  }
+
+  setTurn(turn){
+    this.turn = turn;
+  }
+
+  getTurn(){
+    return this.turn;
   }
 
   // PHASE 1 OF GAME
@@ -170,7 +182,7 @@ class Game {
             case 'horizontal':
 
               for (let i = 0; i < shipLength; i++) {
-                cells[currentPosition].style.backgroundColor = 'red';
+                cells[currentPosition].style.backgroundColor = this.shipColor;
                 positions.push(currentPosition);
                 positionsAll.push(currentPosition);
                 currentPosition++;
@@ -182,7 +194,7 @@ class Game {
 
             case 'vertical':
               for (let i = 0; i < shipLength; i++) {
-                cells[currentPosition].style.backgroundColor = 'red';
+                cells[currentPosition].style.backgroundColor = this.shipColor;
                 positions.push(currentPosition);
                 positionsAll.push(currentPosition);
                 currentPosition += 10;
@@ -239,7 +251,7 @@ class Game {
 
               for (let i = 0; i < shipLength; i++) {
                 if (cells[currentPosition] != undefined) {
-                  cells[currentPosition].style.backgroundColor = 'red';
+                  cells[currentPosition].style.backgroundColor = this.shipColor;
                 }
                 currentPosition++;
               }
@@ -249,7 +261,7 @@ class Game {
             case 'vertical':
               for (let i = 0; i < shipLength; i++) {
                 if (cells[currentPosition] != undefined) {
-                  cells[currentPosition].style.backgroundColor = 'red';
+                  cells[currentPosition].style.backgroundColor = this.shipColor;
                 }
                 currentPosition += 10;
               }
@@ -295,7 +307,7 @@ class Game {
                 for (let i = 0; i < shipLength; i++) {
                   if (!positionsAll.includes(currentPosition)) {
                     if (cells[currentPosition] != undefined) {
-                      cells[currentPosition].style.backgroundColor = 'white';
+                      cells[currentPosition].style.backgroundColor = this.oceanColor;
                     }
                   }
                   currentPosition++;
@@ -307,7 +319,7 @@ class Game {
                 for (let i = 0; i < shipLength; i++) {
                   if (!positionsAll.includes(currentPosition)) {
                     if (cells[currentPosition] != undefined) {
-                      cells[currentPosition].style.backgroundColor = 'white';
+                      cells[currentPosition].style.backgroundColor = this.oceanColor;
                     }
                   }
                   currentPosition += 10;
@@ -330,7 +342,7 @@ class Game {
       ships = [];
 
       [].forEach.call(cells, (cell) => {
-        cell.style.backgroundColor = 'white';
+        cell.style.backgroundColor = this.oceanColor;
       })
 
       let destroyerReady = document.getElementById('destroyer-ready');
@@ -431,6 +443,13 @@ class Game {
 
   //PHASE 2 OF GAME //
   startGame(positions){
+    let shipColor = this.shipColor;
+    let oceanColor = this.oceanColor;
+    let shotColor = this.shotColor;
+    let socket = this.socket;
+    let username = this.username;
+    let turn = this.turn;
+
     let main = document.getElementById('main');
 
     while(main.firstChild){
@@ -450,12 +469,102 @@ class Game {
     opponentBoard.setAttribute('id', 'opponent-board');
     opponentBoard.appendChild(opponentGameBoard);
 
+    //Create Div to under board
+    let buttonContainer = document.createElement('div');
+    buttonContainer.className = 'button-container col text-center';
+
+    //Create button to submit position
+    let submitPosition = document.createElement('button');
+    submitPosition.id = 'submit-position';
+    submitPosition.innerHTML = 'End Turn';
+
+    //Create opponent waiting box
+    let waitingOpponent = document.createElement('button');
+    waitingOpponent.id = 'waiting-opponent';
+    waitingOpponent.innerHTML = "Waiting on opponent...";
+
+    //Attach both boards on to page
     main.appendChild(playerBoard);
     main.appendChild(opponentBoard);
 
     loadShips(positions);
+    mainGameLoop();
 
-    
+
+    function mainGameLoop(){
+      let positionHistory = [];
+      let selectOpponentPosition;
+      let opponentCells = document.getElementsByClassName('opponent-cell');
+
+      [].forEach.call(opponentCells, cell =>{
+        cell.addEventListener('click', ()=>{
+          selectOpponentPosition = parseInt(cell.getAttribute('data-opponent-position'));
+          cell.style.backgroundColor = 'red';
+          positionHistory.push(selectOpponentPosition);
+        });
+
+        cell.addEventListener('mouseover', ()=>{
+          cell.style.backgroundColor = 'red';
+        })
+
+        cell.addEventListener('mouseout', ()=>{
+          let currentPosition = parseInt(cell.getAttribute('data-opponent-positions'));
+      
+          if( !positionHistory.includes(currentPosition) ){
+            cell.style.backgroundColor = 'white';
+          }
+
+        })
+      })
+
+      //Add event listener to submit to check position
+      submitPosition.addEventListener('click', ()=>{
+
+        socket.emit('check-position', {
+          playerName: username,
+          position: selectOpponentPosition,
+        })
+
+      })
+
+      //If it is the player's turn, they will have the "end turn" button
+      //Else "Waiting for opponent" will display
+      if(turn === username){
+        buttonContainer.appendChild(submitPosition);
+        main.appendChild(buttonContainer);
+      } else {
+        buttonContainer.appendChild(waitingOpponent);
+        main.appendChild(buttonContainer);
+      }
+
+      socket.on('end-turn', (data)=>{
+        turn = data.turn;
+
+        if(turn === username){
+          buttonContainer.removeChild(buttonContainer.firstChild);
+          buttonContainer.appendChild(submitPosition);
+          main.appendChild(buttonContainer);
+        } else {
+          buttonContainer.removeChild(buttonContainer.firstChild);
+          buttonContainer.appendChild(waitingOpponent);
+          main.appendChild(buttonContainer);
+        }
+      })
+
+      socket.on('hit', (data)=>{
+        opponentCells[data.position].style.backgroundColor = shotColor;
+      })
+
+      socket.on('miss', (data)=>{
+        opponentCells[data.position].style.backgroundColor = oceanColor;
+      })
+
+      socket.on('game-over', (data)=>{
+        buttonContainer.innerHTML = data.winner + ' WINNER WINNER CHICKEN DINNER'; 
+      })
+
+    }
+
 
     function loadShips(positions){
       let playerCells = document.getElementsByClassName('player-cell');
@@ -466,7 +575,7 @@ class Game {
         positions.forEach( position => {
 
           if(cellPosition == position){
-            cell.style.backgroundColor = 'red';
+            cell.style.backgroundColor = shipColor;
           }
 
         })
@@ -505,6 +614,13 @@ class Game {
           let cell = document.createElement('td');
           cell.setAttribute(cellName, count++);
           cell.setAttribute('class', name + '-cell');
+
+          if(name == 'player'){
+            cell.style.backgroundColor = oceanColor; 
+          } else {
+            cell.style.backgroundColor = 'white';
+          }
+
           row.appendChild(cell);
         }
 
