@@ -7,19 +7,37 @@
 body,h1,h2,h3,h4,h5,h6,p,a,ul,li,img,td,th{
   padding:0;
   margin:0;
-  font-family: 'Oswald', sans-serif;
 }
 
+html{
+  height: 100%;
+}
+
+body{
+  font-family: 'Oswald', sans-serif;
+  background: rgba(0,0,0,1);
+  background: -moz-radial-gradient(center, ellipse cover, rgba(0,0,0,1) 0%, rgba(52,58,64,1) 0%, rgba(15,14,14,1) 99%, rgba(15,14,14,1) 100%);
+  background: -webkit-gradient(radial, center center, 0px, center center, 100%, color-stop(0%, rgba(0,0,0,1)), color-stop(0%, rgba(52,58,64,1)), color-stop(99%, rgba(15,14,14,1)), color-stop(100%, rgba(15,14,14,1)));
+  background: -webkit-radial-gradient(center, ellipse cover, rgba(0,0,0,1) 0%, rgba(52,58,64,1) 0%, rgba(15,14,14,1) 99%, rgba(15,14,14,1) 100%);
+  background: -o-radial-gradient(center, ellipse cover, rgba(0,0,0,1) 0%, rgba(52,58,64,1) 0%, rgba(15,14,14,1) 99%, rgba(15,14,14,1) 100%);
+  background: -ms-radial-gradient(center, ellipse cover, rgba(0,0,0,1) 0%, rgba(52,58,64,1) 0%, rgba(15,14,14,1) 99%, rgba(15,14,14,1) 100%);
+  background: radial-gradient(ellipse at center, rgba(0,0,0,1) 0%, rgba(52,58,64,1) 0%, rgba(15,14,14,1) 99%, rgba(15,14,14,1) 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#000000', endColorstr='#0f0e0e', GradientType=1 );
+  color:white;
+  min-height:100%;
+}
+
+.main-content{
+  padding:50px 0px;
+}
 
 .navbar-brand{
-  font-family: 'Oswald', sans-serif;
   font-weight:700;
 }
 
 nav{
-  font-family: 'Oswald', sans-serif;
   font-weight:400;
-  margin-bottom:50px;
+  margin-bottom:0px;
 }
 
 .form{
@@ -27,6 +45,38 @@ nav{
   border: .2rem solid silver;
 }
 
+.bg-black{
+  background-color:black;
+}
+/* Home page */
+.homepage{
+  padding:120px 0px 200px 0px;
+}
+
+.logo-container{
+  padding:50px 0px 50px 0px;
+}
+
+.home-button-container{
+  color:white;
+  text-align:center;
+}
+
+.home-button-container a{
+  color:white;
+}
+
+/* Home page end */
+
+/* Lobby */
+
+.lobby-header{  font-size:24px;
+  padding:12px 0px;
+}
+
+#room-list-container{
+  border:solid 1px white;
+}
 
 .room-list{
   height:500px;
@@ -41,9 +91,9 @@ nav{
   color:white;
   list-style:none;
   text-decoration:none;
-  background-color:silver;
+  background-color:#3f3f3f;
   border-bottom:solid 2px white;
-  padding:5px;
+  padding:20px;
   display:block;
 }
 
@@ -54,33 +104,139 @@ nav{
 }
 
 .user-list-container{
+  font-size:18px;
+  background-color:#3f3f3f;
   height:500px;
   overflow-y:scroll;
   border-right:solid 2px silver;
   border-top:solid 2px silver;
   border-left:solid 2px silver;
+  padding-left:15px !important;
+}
+
+/* Lobby End */
+
+/* Chat Box */
+
+.chat-box-container{
+  padding:15px 0px;
 }
 
 .chat-container{
+  color:black;
+  margin-top:15px; 
+  background-color:white;
   height:200px;
   overflow-y:scroll;
   border:solid 2px silver;
 }
 
-.lobby-header{
-  font-size:24px;
-  padding:12px 0px;
+/* Game Dashboard */
+.room-dashboard{
+  background-color:#343A40;
+  color:white;
+  margin-bottom:25px;
+}
+
+/* Game Room */
+#game-room{
+  background-color:#343A40;
+  padding:25px 50px;
+}
+
+
+/* Select Ships Container */
+.select-ships{
+  color:white;
+}
+
+.select-ships-header{
+  padding-top:15px;
+  padding-bottom:15px;
+  background-color:black;
+}
+
+.select-ship-item{
+  padding-top:5px;
+  padding-bottom:5px;
+  background-color:black;
+}
+
+.select-ship-item:last-of-type{
+  padding-bottom:20px;
+}
+
+.ship-name{
+  padding:20px 0px;
+  background-color:black;
+}
+
+.ship-button{
+  color:white;
+  background-color: #00A8E8; 
+  text-align:center;
+  padding:16px 0px;
+  border:4px solid #00a8e8;
+  transition:ease 0.4s;
+  cursor:pointer;
+}
+
+.ship-button:hover{
+  color:#00A8E8;
+  background-color:white;
+}
+
+#ready-container{
+  margin-top:15px;
+}
+
+#reset-button{
+  padding:20px 0px;
+  background-color:red;
+  text-align:center;
+  margin:0px 15px;
+  cursor:pointer;
+  transition:ease 0.3s;
+}
+
+#reset-button:hover{
+  opacity:0.5;
+}
+
+#ready-button{
+  padding: 20px 0px;
+  background-color:green;
+  text-align:center;
+  margin:0px 15px;
+  cursor:pointer;
+  transition: ease 0.3s;
+}
+
+#ready-button:hover{
+  opacity:0.5;
 }
 
 
 
 
-/* Game Board CSS */
+/* Game Board */
 
+/* cell size */
 #gameboard td{
   border: solid 1px black;
   padding:22px;
-  background-color:#0060fc;
+}
+
+@media (max-width: 1000px){
+  #gameboard td{
+    padding:16px;
+  }
+}
+
+@media (max-width: 770px){
+  #gameboard td{
+    padding:12px;
+  }
 }
 
 .select-ships button{
@@ -95,19 +251,23 @@ nav{
 }
 
 #submit-position{
-  background-color: #343A40;
+  background-color: black;
   color: white;
   display:block;
   border:none;
   width:460px;
   padding: 15px 0px;
+  transition: ease 0.5s;
 }
+
 
 #waiting-opponent{
   background-color: white;
-  color: #343a40;
+  color: black;
   display:block;
-  border:solid 2px #343a40;
+  border:solid 2px black;
   width:460px;
   padding: 15px 0px;
 }
+
+

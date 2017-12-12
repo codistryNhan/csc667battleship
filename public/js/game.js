@@ -1,11 +1,12 @@
+
 class Game {
 
   constructor(){
     this.username;
     this.gameId;
     this.socket;
-    this.shipColor = '#7a7a7a';
-    this.oceanColor = '#0060fc';
+    this.shipColor = '#4b535b';
+    this.oceanColor = '#00a9ff';
     this.shotColor = '#d80000';
     this.turn;
   }
@@ -148,32 +149,22 @@ class Game {
           switch (shipType) {
             case 'destroyer':
               shipLength = 2;
-              let destroyerReady = document.getElementById('destroyer-ready');
-              destroyerReady.innerHTML = '&#10004;';
               break;
 
             case 'submarine':
               shipLength = 3;
-              let submarineReady = document.getElementById('submarine-ready');
-              submarineReady.innerHTML = '&#10004;';
               break;
 
             case 'cruiser':
               shipLength = 3;
-              let cruiserReady = document.getElementById('cruiser-ready');
-              cruiserReady.innerHTML = '&#10004;';
               break;
 
             case 'battleship':
               shipLength = 4;
-              let battleshipReady = document.getElementById('battleship-ready');
-              battleshipReady.innerHTML = '&#10004;';
               break;
 
             case 'carrier':
               shipLength = 5;
-              let carrierReady = document.getElementById('carrier-ready');
-              carrierReady.innerHTML = '&#10004;';
               break;
             default:
           }
@@ -188,6 +179,10 @@ class Game {
                 currentPosition++;
               }
               selected.removeAttribute('data-selected');
+              $(function(){
+                let ship = '#' + shipType;
+                $(ship + '-container').slideUp(250);
+              });
 
               break;
 
@@ -199,6 +194,11 @@ class Game {
                 currentPosition += 10;
               }
               selected.removeAttribute('data-selected');
+              $(function(){
+                let ship = '#' + shipType;
+                $(ship + '-container').slideUp(250);
+              });
+
               break;
           }
 
@@ -332,8 +332,7 @@ class Game {
     /* GAMEBOARD HOVER EFFECT END */
 
     /* RESET BUTTON */
-
-    let resetButton = document.getElementById('reset');
+    let resetButton = document.getElementById('reset-button');
     resetButton.addEventListener('click', () => {
       positionsAll = [];
       ships = [];
@@ -342,7 +341,15 @@ class Game {
         cell.style.backgroundColor = this.oceanColor;
       })
 
-      let destroyerReady = document.getElementById('destroyer-ready');
+      $(function(){
+        $('#destroyer-container').slideDown();
+        $('#cruiser-container').slideDown();
+	$('#submarine-container').slideDown();
+	$('#battleship-container').slideDown();
+	$('#carrier-container').slideDown();
+      })
+      /*
+      let destroyerReady = document.getElementById('destroyer-container');
       destroyerReady.innerHTML = '';
 
       let submarineReady = document.getElementById('submarine-ready');
@@ -356,11 +363,13 @@ class Game {
 
       let carrierReady = document.getElementById('carrier-ready');
       carrierReady.innerHTML = '';
+      */
     })
     /* RESET BUTTON END */
 
     /* READY BUTTON */
-    let readyButton = document.getElementById('ready');
+    
+    let readyButton = document.getElementById('ready-button');
 
     readyButton.addEventListener('click', () => {
       let username = this.username;
@@ -381,6 +390,9 @@ class Game {
         }),
 
       }).then(()=>{
+        $(function(){
+          $('#ready-container').slideUp(250);
+        })
 
         socket.emit('player-ready', {
           username: username,
@@ -391,6 +403,7 @@ class Game {
     })
 
   }
+  
 
   /* CREATES GAMEBOARD */
   //Creates a gameboard of input size
@@ -427,6 +440,7 @@ class Game {
         let cell = document.createElement('td');
         cell.setAttribute('data-position', count++);
         cell.setAttribute('class', 'cell');
+        cell.style.backgroundColor = this.oceanColor;
         row.appendChild(cell);
       }
 

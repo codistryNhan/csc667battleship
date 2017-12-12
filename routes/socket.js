@@ -87,10 +87,14 @@ module.exports = function(io){
     let player2 = '';
     let player1positions = [];
     let player2positions = [];
+    let ship1obj = {};
+    let ship2obj = {};
     let turn;
+    let game = new Game();
+    let lobby = new Lobby();
 
+    //When players connect to room
     room.on('connection', (socket)=>{
-      let lobby = new Lobby();
       lobby.getPlayersName(roomId).then( result =>{
         //Set players as player1 and player2
         player1 = result[0].player1;
@@ -112,6 +116,7 @@ module.exports = function(io){
 
      });
 
+    //Players click ready, emit ready status
     socket.on('player-ready', (data)=>{
       ready++;
 
@@ -123,12 +128,13 @@ module.exports = function(io){
       }
 
       if(ready === 2){
-        let game = new Game();
 
+        //Push ship positions into an array
         game.getShipPositions(roomId, player1).then( results =>{
           results.forEach( result =>{
             player1positions.push(result.ship_position);
           })
+
         }).then(()=>{
 
           game.getShipPositions(roomId, player2).then( results =>{
@@ -164,22 +170,38 @@ module.exports = function(io){
 
         //If shot is from player1
         if(player1 == data.playerName){
-          console.log("I am 1 " + player1positions);
-          console.log("I am 1 " + data.position);
 
+          //If player1 hits an enemey ship
           if(player2positions.includes(data.position)){
             let index = player2positions.indexOf(data.position);
 
             player2positions.splice(index, 1);
 
-            socket.emit('hit', {
-              position: data.position,
-            });
+            game.getShipName(roomId, player2, data.position).then( data =>{
+              let shipName = data[0].ship_type.toUpper();
+              shipName.toUpperCase();
+ 
+              socket.emit('hit', {
+                position: data.position,
+              });
+              
+              room.emit('message-sent', {
+                username: '<span style="color:red"><strong>GAME</strong></span>',
+                message: '<span style="color:red;"><strong>' + player1.toUpperCase() + ' HITS A ' + shipName + ' </strong></span>',
+              })
+
+            })
 
           } else {
             socket.emit('miss', {
               position: data.position,
             });
+
+            room.emit('message-sent', {
+                username: '<span style="color:red"><strong>GAME</strong></span>',
+                message: '<span style="color:red;"><strong>' + player1.toUpperCase() + ' MISSES  </strong></span>',
+             })
+
           }
 
           if(player2positions.length == 0){
@@ -195,22 +217,36 @@ module.exports = function(io){
 
         //If shot is from player2
         } else {
-          console.log("I am 2 " + player2positions);
-          console.log("I am 2 " + data.position);
 
           if(player1positions.includes(data.position)){
             let index = player1positions.indexOf(data.position);
 
             player1positions.splice(index, 1);
 
-            socket.emit('hit', {
-              position: data.position,
-            });
+            game.getShipName(roomId, player1, data.position).then( data =>{
+              let shipName = data[0].ship_type;
+              shipName.toUpperCase();
+
+              socket.emit('hit', {
+                position: data.position,
+              });
+
+              room.emit('message-sent', {
+                username: '<span style="color:red"><strong>GAME</strong></span>',
+                message: '<span style="color:red;"><strong>' + player1.toUpperCase() + ' HITS A ' + shipName + ' </strong></span>',
+              })
+
+            })
 
           } else {
             socket.emit('miss', {
               position: data.position,
             });
+
+            room.emit('message-sent', {
+                username: '<span style="color:red"><strong>GAME</strong></span>',
+                message: '<span style="color:red;"><strong>' + player2.toUpperCase() + ' MISSES  </strong></span>',
+             })
           }
 
           if(player1positions.length == 0){

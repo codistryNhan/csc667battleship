@@ -29,7 +29,7 @@ router.post('/login', function(req,res){
 
     if(result){
       res.locals.session.username = username;
-      res.render('index');
+      res.redirect('/lobby');
     } else {
       res.render('login');
     }
@@ -62,13 +62,17 @@ router.post('/register', function(req,res){
 
 router.get('/signout', function(req,res){
 
-  res.local.session.destroy( ()=> {
+  res.locals.session.destroy( ()=> {
     res.redirect('/');
   });
 
 })
 
 router.get('/lobby', function(req,res){
+
+  if(!res.locals.session.username){
+    res.redirect('/login');
+  }
 
   let lobby = new Lobby();
 

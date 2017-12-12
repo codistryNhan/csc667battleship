@@ -8,9 +8,9 @@
 
   </div>
 
-  <div class="row">
+  <div class="row no-gutters">
 
-    <div class="col-9 room-list" id="room-list-container">
+    <div class=" col-9 room-list no-gutters" id="room-list-container">
       <ul id="room-list">
         {{#each lobby as | room |}}
             <li class="room-item"> Room <span class="roomNum">{{room.id}}</span> - Player 1:<span class="player1Name">{{#if room.player1}} {{room.player1}} </span> {{else}}</span> <button data-room-id="{{room.id}}" class="btn btn-primary player1Join">Join</button> {{/if}} ---------- 
@@ -25,13 +25,13 @@
 
   </div>
 
-  <div class="row">
+  <div class="row no-gutters">
     <div id="chat-box" class="col chat-container mb-2">
     </div>
 
     <div class="input-group">
       <input type="text" id="message" class="form-control" placeholder="Get Rekt">
-      <span class="input-group-btn" id="message-send"><button id="message-send" class="btn btn-secondary">Send</button></span>
+      <span class="input-group-btn" id="message-send"><button id="message-send" class="btn btn-secondary" type="submit">Send</button></span>
      </div>
 
   </div>
@@ -210,5 +210,6 @@
   }
 
   /* JOIN ROOM END */
+
 
 </script>

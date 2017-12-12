@@ -1,4 +1,4 @@
-<div id="game-room" class="container">
+<div id="game-room">
 
   <div class="room-dashboard">
     <div class="row">
@@ -67,84 +67,84 @@
      <div class="select-ships">
        <div class="container">
 
-         <div class="row select-ships-header">
-           <div class="col">
-             <h2>Select Ships</h2>
-           </div>
+       <div class="row select-ships-header">
+         <div class="col">
+           <h2>Select Ships</h2>
+         </div>
+       </div>
+
+       <div class="row select-ship-item" id="destroyer-container">
+
+         <div class="col">
+           <h4 class="ship-name">Destroyer</h4>
          </div>
 
-         <div class="row select-ship-item" id="destroyer-container">
-
-           <div class="col">
-             <h4 class="ship-name">Destroyer</h4>
-           </div>
-
-           <div class="col">
-             <p class="ship-button" id="destroyer-horizontal">Horizontal</p>
-           </div>
-
-           <div class="col">
-             <p class="ship-button" id="destroyer-vertical">Vertical</p>
-           </div>
-
+         <div class="col">
+           <p class="ship-button" id="destroyer-horizontal">Horizontal</p>
          </div>
+
+         <div class="col">
+           <p class="ship-button" id="destroyer-vertical">Vertical</p>
+         </div>
+
+       </div>
       
-         <div class="row select-ship-item" id="cruiser-container">
-           <div class="col">
-             <h4 class="ship-name">Cruiser</h4>
-           </div>
-           <div class="col">
-             <p class="ship-button" id="cruiser-horizontal">Horizontal</p>
-           </div>
-           <div class="col">
-             <p class="ship-button" id="cruiser-vertical">Vertical</p>
-           </div>
+       <div class="row select-ship-item" id="cruiser-container">
+         <div class="col">
+           <h4 class="ship-name">Cruiser</h4>
          </div>
+         <div class="col">
+           <p class="ship-button" id="cruiser-horizontal">Horizontal</p>
+         </div>
+         <div class="col">
+           <p class="ship-button" id="cruiser-vertical">Vertical</p>
+         </div>
+       </div>
 
-         <div class="row select-ship-item" id="submarine-container">
-           <div class="col">
-             <h4 class="ship-name">Submarine</h4>
-           </div>
-           <div class="col">
-             <p class="ship-button" id="submarine-horizontal">Horizontal</p>
-           </div>
-           <div class="col">
-             <p class="ship-button" id="submarine-vertical">Vertical</p>
-           </div>
+       <div class="row select-ship-item" id="submarine-container">
+         <div class="col">
+           <h4 class="ship-name">Submarine</h4>
          </div>
+         <div class="col">
+           <p class="ship-button" id="submarine-horizontal">Horizontal</p>
+         </div>
+         <div class="col">
+           <p class="ship-button" id="submarine-vertical">Vertical</p>
+         </div>
+       </div>
 
-         <div class="row select-ship-item" id="battleship-container">
-           <div class="col">
-             <h4 class="ship-name" >Battleship</h4>
-           </div>
-           <div class="col">
-             <p class="ship-button" id="battleship-horizontal">Horizontal</p>
-           </div>
-           <div class="col">
-             <p class="ship-button" id="battleship-vertical">Vertical</p>
-           </div>
+       <div class="row select-ship-item" id="battleship-container">
+         <div class="col">
+           <h4 class="ship-name" >Battleship</h4>
          </div>
+         <div class="col">
+           <p class="ship-button" id="battleship-horizontal">Horizontal</p>
+         </div>
+         <div class="col">
+           <p class="ship-button" id="battleship-vertical">Vertical</p>
+         </div>
+       </div>
 
-         <div class="row select-ship-item" id="carrier-container">
-           <div class="col">
-             <h4 class="ship-name">Carrier</h4>
-           </div>
-           <div class="col">
-             <p class="ship-button" id="carrier-horizontal">Horizontal</p>
-           </div>
-           <div class="col">
-             <p class="ship-button" id="carrier-vertical">Vertical</p>
-           </div>
+       <div class="row select-ship-item" id="carrier-container">
+         <div class="col">
+           <h4 class="ship-name">Carrier</h4>
          </div>
+         <div class="col">
+           <p class="ship-button" id="carrier-horizontal">Horizontal</p>
+         </div>
+         <div class="col">
+           <p class="ship-button" id="carrier-vertical">Vertical</p>
+         </div>
+       </div>
 
-         <div class="row" id="ready-container">
-           <div id="reset-button" class="col">
-             <p>RESET</p>
-           </div>
-           <div id="ready-button" class="col">
-             <p>READY</p>
-           </div>
+       <div class="row" id="ready-container">
+         <div id="reset-button" class="col">
+           <p>RESET</p>
          </div>
+         <div id="ready-button" class="col">
+           <p>READY</p>
+         </div>
+       </div>
 
       </div>
 
