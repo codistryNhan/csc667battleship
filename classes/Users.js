@@ -66,6 +66,21 @@ class Users{
     })
   }
 
+  getProfile(username){
+    return db.any('SELECT username, email, win, loss FROM users WHERE username = $1', [username]);
+  }
+
+  getWinLoss(username){
+    return db.any('SELECT  win, loss FROM users WHERE username = $1', [username]);
+  }
+
+  addWin(username){
+    return db.any('UPDATE users set win = win + 1 WHERE username = $1', [username]);
+  }
+
+  addLoss(username){
+    return db.any('UPDATE users set loss = loss + 1 WHERE username = $1', [username]);
+  }
 }
 
 module.exports = Users;

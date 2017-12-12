@@ -60,6 +60,26 @@ router.post('/register', function(req,res){
 
 })
 
+router.get('/profile', function(req,res){
+
+  if(!res.locals.session.username){
+    res.redirect('/login');
+  }
+
+  let user = new Users();
+
+  user.getProfile(res.locals.session.username).then( data =>{
+    res.render('profile', {
+      username: data[0].username,
+      email: data[0].email,
+      win: data[0].win,
+      loss: data[0].loss,
+    })
+
+  })
+
+})
+
 router.get('/signout', function(req,res){
 
   res.locals.session.destroy( ()=> {
@@ -173,10 +193,5 @@ router.post('/game/setPositions', (req,res)=>{
 
 })
 
-router.get('/test', (req,res)=>{
-
-  res.render('test');
-
-})
 
 module.exports = router;
