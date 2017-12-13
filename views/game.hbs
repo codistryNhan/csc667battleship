@@ -163,7 +163,7 @@
   let gameId = {{gameId}};
 
   /* SOCKET EVENTS */
-  let socket = io('http://138.197.217.228:3000/game/{{gameId}}')
+  let socket = io('/game/{{gameId}}')
 
   socket.on('player-connected', (data) => {
     let player1NameSpan = document.getElementById('player1Name');
