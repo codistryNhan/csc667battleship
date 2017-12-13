@@ -118,8 +118,8 @@ router.post('/lobby/createRoom', (req, res)=>{
 router.post('/lobby/deleteRoom/:roomNumber', (req,res)=>{
   var roomNumber = req.params.roomNumber;
 
-  var gameroom = new GameRoom();
-  gameroom.deleteRoom(roomNumber);
+  var lobby = new Lobby();
+  lobby.deleteRoom(roomNumber);
 
 })
 
