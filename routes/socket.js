@@ -5,6 +5,7 @@ module.exports = function(io){
   let users = [];
   let Lobby = require('../classes/Lobby');
   let Game = require('../classes/Game');
+  let Users = require('../classes/Users');
 
   io.on('connection', (socket)=>{
     socket.on('lobby-connect', (data)=>{
@@ -92,6 +93,7 @@ module.exports = function(io){
     let turn;
     let game = new Game();
     let lobby = new Lobby();
+    let user = new Users();
 
     //When players connect to room
     room.on('connection', (socket)=>{
@@ -178,7 +180,7 @@ module.exports = function(io){
             player2positions.splice(index, 1);
 
             game.getShipName(roomId, player2, data.position).then( data =>{
-              let shipName = data[0].ship_type.toUpper();
+              let shipName = data[0].ship_type;
               shipName.toUpperCase();
  
               socket.emit('hit', {
@@ -205,9 +207,18 @@ module.exports = function(io){
           }
 
           if(player2positions.length == 0){
-            room.emit('game-over', {
-              winner: player1,
+
+            game.deleteGameRoom(roomId).then(()=>{
+
+              game.deleteShipPositions(roomId);
+              user.addWin(player1);
+              user.addLoss(player2);
+              room.emit('game-over', {
+                winner: player1,
+              })
+
             })
+
             return;
           }
 
@@ -233,7 +244,7 @@ module.exports = function(io){
 
               room.emit('message-sent', {
                 username: '<span style="color:red"><strong>GAME</strong></span>',
-                message: '<span style="color:red;"><strong>' + player1.toUpperCase() + ' HITS A ' + shipName + ' </strong></span>',
+                message: '<span style="color:red;"><strong>' + player2.toUpperCase() + ' HITS A ' + shipName + ' </strong></span>',
               })
 
             })
@@ -250,9 +261,18 @@ module.exports = function(io){
           }
 
           if(player1positions.length == 0){
-            room.emit('game-over', {
-              winner: player2,
+
+            game.deleteGameRoom(roomId).then(()=>{
+
+              game.deleteShipPositions(roomId);
+              user.addWin(player2);
+              user.addLoss(player1);
+              room.emit('game-over', {
+                winner: player2,
+              })
+
             })
+
             return;
           }
 
