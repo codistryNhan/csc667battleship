@@ -584,9 +584,12 @@ class Game {
       })
 
       socket.on('game-over', (data)=>{
-        console.log('WINNER');
-        let buttonContainer = document.getElementById('button-container');
-        buttonContainer.innerHTML = data.winner + ' WINNER WINNER CHICKEN DINNER'; 
+        let message = data.winner.toUpperCase() + " has won the match!";
+        $(function(){
+          $('#game-over-message').html(message);
+          $('#game-over').show();
+        });
+
       })
 
     }

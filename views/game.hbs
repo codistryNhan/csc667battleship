@@ -1,21 +1,27 @@
 <div id="game-room" class="container">
 
+  <div id="game-over" class="text-center">
+    <h1 class="yellow">GAME OVER</h1>
+    <h2 id="game-over-message"></h2>
+    <a id="game-over-leave" href="/lobby">Leave</a>
+  </div>
+
   <div class="room-dashboard">
     <div class="row">
 
       <div class="col">
         <h5 id="room-number">Room</h5>
-        <h1>{{gameId}}</h1>
+        <h1 class="yellow">{{gameId}}</h1>
       </div>
 
       <div class="col">
         <h5>Player 1</h5>
-        <h1><span id="player1Name">{{#if player1}} {{player1}} {{else}} Waiting for player... {{/if}}</span></h1>
+        <h1 class="yellow"><span id="player1Name">{{#if player1}} {{player1}} {{else}} Waiting for player... {{/if}}</span></h1>
       </div>
 
       <div class="col">
         <h5>Player 2</h5>
-        <h1><span id="player2Name">{{#if player2}} {{player2}} {{else}} Waiting for player... {{/if}}</span></h1>
+        <h1 class="yellow"><span id="player2Name">{{#if player2}} {{player2}} {{else}} Waiting for player... {{/if}}</span></h1>
       </div>
     </div>
   </div>
@@ -23,117 +29,94 @@
   <!-- Gameboard  -->
   <div id="main">
     <div class="row mb-4">
-    <div id="gameboard" class="col-6">
+    <div id="gameboard" class="col">
     </div>
 
-    <div class="col-6">
-  <!--    <table class="table table-dark select-ships mt-3">
-        <tr>
-          <th>
-            <h2>Select Ships</h2></th>
-        </tr>
-        <tr>
-          <td class="destroyer-container">Destroyer<span id="destroyer-ready" class="ml-2" style="font-size:36px;"></span></td>
-          <td><button class="btn btn-primary" id="destroyer-horizontal">Horizontal</button></td>
-          <td><button class="btn btn-primary" id="destroyer-vertical">Vertical</button></td>
-        </tr>
-        <tr>
-          <td class="submarine-container">Submarine<span id="submarine-ready" class="ml-2" style="font-size:36px;"></span></td>
-          <td><button class="btn btn-primary" id="submarine-horizontal">Horizontal</button></td>
-          <td><button class="btn btn-primary" id="submarine-vertical">Vertical</button></td>
-        </tr>
-        <tr>
-          <td class="cruiser-container">Cruiser<span id="cruiser-ready" class="ml-2" style="font-size:36px;"></span></td>
-          <td><button class="btn btn-primary" id="cruiser-horizontal">Horizontal</button></td>
-          <td><button class="btn btn-primary" id="cruiser-vertical">Vertical</button></td>
-        </tr>
-        <tr>
-          <td class="battleship-container">Battleship<span id="battleship-ready" class="ml-2" style="font-size:36px;"></span></td>
-          <td><button class="btn btn-primary" id="battleship-horizontal">Horizontal</button></td>
-          <td><button class="btn btn-primary" id="battleship-vertical">Vertical </button></td>
-        </tr>
-        <tr>
-          <td class="carrier-container">Carrier<span id="carrier-ready" class="ml-2" style="font-size:36px;"></span></td>
-          <td><button class="btn btn-primary" id="carrier-horizontal">Horizontal</button></td>
-          <td><button class="btn btn-primary" id="carrier-vertical">Vertical</button></td>
-        </tr>
-        <tr>
-          <td></td>
-          <td><button class="btn btn-danger" id="reset">Reset</button></td>
-          <td><button class="btn btn-success" id="ready">Ready</button></td>
-        </tr>
-      </table> -->
+    <div clas="col">
+    </div>
 
+    <div class="col">
+      <div class="select-ships">
+        <ul>
+          <li class="select-ships-header">Select Ships</li>
+          <li class="select-ships-item" id="destroyer-container"><span class="ship-name">Destroyer</span> <span class="ship-button-container float-right"><button id="destroyer-horizontal" class="ship-button">Horizontal</button><button id="destroyer-vertical" class="ship-button">Vertical</button></span></li>
+          <li class="select-ships-item" id="cruiser-container"><span class="ship-name">Cruiser</span> <span class="ship-button-container float-right"><button id="cruiser-horizontal" class="ship-button">Horizontal</button><button id="cruiser-vertical" class="ship-button">Vertical</button></span></li>
+          <li class="select-ships-item" id="submarine-container"><span class="ship-name">Submarine</span> <span class="ship-button-container float-right"><button id="submarine-horizontal" class="ship-button">Horizontal</button><button id="submarine-vertical" class="ship-button">Vertical</button></span></li>
+          <li class="select-ships-item" id="battleship-container"><span class="ship-name">Battleship</span> <span class="ship-button-container float-right"><button id="battleship-horizontal" class="ship-button">Horizontal</button><button id="battleship-vertical" class="ship-button">Vertical</button></span></li>
+          <li class="select-ships-item" id="carrier-container"><span class="ship-name">Carrier</span> <span class="ship-button-container float-right"><button id="carrier-horizontal" class="ship-button">Horizontal</button><button id="carrier-vertical" class="ship-button">Vertical</button></span></li>
+          <li class="select-ships-item" id="ready-container"><span class="ship-button-container float-right"><button id="reset-button" class="ship-button">Reset</button><button id="ready-button" class="ship-button">Ready</button></span></li>
+        </ul>
+      </div>
+    </div>
+
+<!--    <div class="col">
      <div class="select-ships">
        <div class="container">
 
          <div class="row select-ships-header">
-           <div class="col">
-             <h2>Select Ships</h2>
+           <div class="">
+             <p>Select Ships</p>
            </div>
          </div>
 
          <div class="row select-ship-item" id="destroyer-container">
 
            <div class="col">
-             <h4 class="ship-name">Destroyer</h4>
+             <p class="ship-name">Destroyer</p>
            </div>
 
            <div class="col">
-             <p class="ship-button" id="destroyer-horizontal">Horizontal</p>
-           </div>
-
-           <div class="col">
-             <p class="ship-button" id="destroyer-vertical">Vertical</p>
+             <button class="ship-button" id="destroyer-horizontal">Horizontal</button>
+             <button class="ship-button" id="destroyer-vertical">Vertical</button>
            </div>
 
          </div>
       
          <div class="row select-ship-item" id="cruiser-container">
-           <div class="col">
-             <h4 class="ship-name">Cruiser</h4>
+           <div class="col-4">
+             <p class="ship-name">Cruiser</p>
            </div>
-           <div class="col">
-             <p class="ship-button" id="cruiser-horizontal">Horizontal</p>
+           <div class="">
+             <button class="ship-button" id="cruiser-horizontal">Horizontal</button>
            </div>
-           <div class="col">
-             <p class="ship-button" id="cruiser-vertical">Vertical</p>
+           <div class="">
+             <button class="ship-button" id="cruiser-vertical">Vertical</button>
            </div>
          </div>
 
          <div class="row select-ship-item" id="submarine-container">
-           <div class="col">
-             <h4 class="ship-name">Submarine</h4>
+           <div class="col-4">
+             <p class="ship-name">Submarine</p>
            </div>
-           <div class="col">
-             <p class="ship-button" id="submarine-horizontal">Horizontal</p>
+           <div class="">
+             <button class="ship-button" id="submarine-horizontal">Horizontal</button>
            </div>
-           <div class="col">
-             <p class="ship-button" id="submarine-vertical">Vertical</p>
+           <div class="">
+             <button class="ship-button" id="submarine-vertical">Vertical</button>
            </div>
          </div>
 
          <div class="row select-ship-item" id="battleship-container">
-           <div class="col">
-             <h4 class="ship-name" >Battleship</h4>
+           <div class="col-4">
+             <p class="ship-name" >Battleship</p>
            </div>
-           <div class="col">
-             <p class="ship-button" id="battleship-horizontal">Horizontal</p>
+           <div class="">
+             <button class="ship-button" id="battleship-horizontal">Horizontal</button>
            </div>
-           <div class="col">
-             <p class="ship-button" id="battleship-vertical">Vertical</p>
+           <div class="">
+             <button class="ship-button" id="battleship-vertical">Vertical</button>
            </div>
          </div>
 
          <div class="row select-ship-item" id="carrier-container">
-           <div class="col">
-             <h4 class="ship-name">Carrier</h4>
+           <div class="col-4">
+             <p class="ship-name">Carrier</p>
            </div>
-           <div class="col">
-             <p class="ship-button" id="carrier-horizontal">Horizontal</p>
+           <div class="">
+             <button class="ship-button" id="carrier-horizontal">Horizontal</button>
            </div>
-           <div class="col">
-             <p class="ship-button" id="carrier-vertical">Vertical</p>
+           <div class="">
+             <button class="ship-button" id="carrier-vertical">Vertical</button>
            </div>
          </div>
 
@@ -148,8 +131,8 @@
 
       </div>
 
-     </div><!-- select ships end -->
- 
+     </div> --><!-- select ships end -->
+
     </div>
     </div>
 
