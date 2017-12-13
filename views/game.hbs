@@ -213,6 +213,8 @@
     chatMessage.innerHTML = username + ': ' + message;
 
     chatBox.appendChild(chatMessage);
+
+    chatBox.scrollTop = chatBox.scrollHeight;
   })
 
 
