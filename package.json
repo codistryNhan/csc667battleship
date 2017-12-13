@@ -32,9 +32,10 @@
     "mocha": "^4.0.1",
     "morgan": "~1.9.0",
     "pg": "^7.4.0",
+    "pg-format": "^1.0.4",
     "pg-promise": "^7.3.1",
-    "sequelize": "^4.22.6",
-    "sequelize-cli": "^3.0.0",
+    "sequelize": "^4.27.0",
+    "sequelize-cli": "^3.2.0",
     "serve-favicon": "~2.4.5",
     "socket.io": "^2.0.4"
   },
