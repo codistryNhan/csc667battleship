@@ -114,14 +114,14 @@ router.post('/lobby/createRoom', (req, res)=>{
 
 })
 
-/*
-router.get('/deleteRoom/:roomNumber', (req,res)=>{
+
+router.post('/deleteRoom/:roomNumber', (req,res)=>{
   var roomNumber = req.params.roomNumber;
 
   var gameroom = new GameRoom();
   gameroom.deleteRoom(roomNumber);
 
-})*/
+})
 
 router.post('/lobby/player1Join/:roomNumber', (req,res)=>{
   let username = res.locals.session.username;
