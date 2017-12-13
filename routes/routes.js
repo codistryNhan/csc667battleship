@@ -119,7 +119,9 @@ router.post('/lobby/deleteRoom/:roomNumber', (req,res)=>{
   var roomNumber = req.params.roomNumber;
 
   var lobby = new Lobby();
-  lobby.deleteRoom(roomNumber);
+  lobby.deleteRoom(roomNumber).then(()=>{
+    res.sendStatus(200);
+  });
 
 })
 
