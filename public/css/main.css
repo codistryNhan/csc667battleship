@@ -28,7 +28,7 @@ body{
 }
 
 button{
-  ouline:none;
+  outline:none;
 }
 
 a:hover{
@@ -198,8 +198,7 @@ nav{
 /* Select Ships Container */
 .select-ships{
   background-color:black;
-  padding:20px 30px;
-  padding-bottom:60px;
+  padding:25px 25px;
 }
 
 .select-ships li{
@@ -217,13 +216,15 @@ nav{
 
 .ship-name{
   font-size:1.2rem;
-  padding-top:15px;
+  display:inline-block;
+  width:90px;
+  height:35px;
 }
 
 .ship-button{
   background-color:white;
   color:black;
-  margin-right:15px;
+  margin-right:8px;
   transition:ease 0.4s;
 }
 
@@ -232,9 +233,10 @@ nav{
 }
 
 #reset-button{
-  background-color:#d30000;
-  color:white;
-  border:#d30000 solid 1px;
+  background-color:#343A40;
+  color:#fce300;
+  margin-right:0px;
+  margin-left:8px;
 }
 
 #reset-button:hover{
@@ -242,9 +244,10 @@ nav{
 }
 
 #ready-button{
-  background-color:#00d31c;
-  color:white;
-  border:#00d31c solid 1px;
+  background-color:#fce300;
+  color:black;
+  margin-right:0px;
+  margin-left:8px;
 }
 
 #ready-button:hover{
