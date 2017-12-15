@@ -27,6 +27,14 @@ body{
   min-height:100%;
 }
 
+button{
+  ouline:none;
+}
+
+a:hover{
+  text-decoration:none;
+}
+
 .main-content{
   padding:50px 0px;
 }
@@ -52,6 +60,32 @@ nav{
 .yellow{
   color:#fce300;
 }
+
+/* Log in page */
+
+.login a{
+  color:#FCE300;
+}
+
+.login button{
+  background-color:#FCE300;
+  color:black;
+  cursor:pointer;
+}
+
+/* Register page */
+
+.register a{
+  color:#fce300;
+}
+
+.register button{
+  background-color:#fce300;
+  color:black;
+  cursor:pointer;
+}
+
+
 /* Home page */
 .homepage{
   padding:120px 0px 200px 0px;
