@@ -165,6 +165,7 @@ nav{
   height:200px;
   overflow-y:scroll;
   border:solid 2px silver;
+  border-radius: 0.25rem;
 }
 
 .btn-chat-send{
@@ -220,18 +221,14 @@ nav{
 }
 
 .ship-button{
-  background-color:black;
+  background-color:white;
+  color:black;
   margin-right:15px;
-  border:white 1px solid;
-  color:white;
-  padding-top:10px;
-  padding-bottom:10px;
   transition:ease 0.4s;
 }
 
 .ship-button:hover{
-  background-color:white;
-  color:black;
+  opacity:0.5;
 }
 
 #reset-button{
@@ -253,82 +250,6 @@ nav{
 #ready-button:hover{
   opacity:0.5;
 }
-
-/*
-.select-ships{
-  color:white;
-}
-
-.select-ships-header{
-  font-size:1.5rem;
-  padding:25px;
-  background-color:black;
-}
-
-.select-ship-item{
-  padding-top:5px;
-  padding-bottom:5px;
-  background-color:black;
-}
-
-.select-ship-item:last-of-type{
-  padding-bottom:20px;
-}
-
-.ship-name{
-  font-size:1.2rem;
-  padding:20px 25px;
-  background-color:black;
-}
-
-.ship-button{
-  color:white;
-  background-color: #262a2d; 
-  text-align:center;
-  padding:16px 0px;
-  border:4px solid #262a2d;
-  transition:ease 0.4s;
-  cursor:pointer;
-  margin-right:15px;
-}
-
-.ship-button:hover{
-  color:#262a2d;
-  background-color:white;
-}
-
-#ready-container{
-  margin-top:15px;
-}
-
-#reset-button{
-  padding:20px 0px;
-  background-color:red;
-  text-align:center;
-  margin:0px 15px;
-  cursor:pointer;
-  transition:ease 0.3s;
-}
-
-#reset-button:hover{
-  opacity:0.5;
-}
-
-#ready-button{
-  padding: 20px 0px;
-  background-color:green;
-  text-align:center;
-  margin:0px 15px;
-  cursor:pointer;
-  transition: ease 0.3s;
-}
-
-#ready-button:hover{
-  opacity:0.5;
-}
-
-*/
-
 
 /* Game Board */
 

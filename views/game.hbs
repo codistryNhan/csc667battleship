@@ -42,12 +42,58 @@
         <div class="select-ships">
           <ul>
             <li class="select-ships-header">Select Ships</li>
-            <li class="select-ships-item" id="destroyer-container"><span class="ship-name">Destroyer</span> <span class="ship-button-container float-right"><button id="destroyer-horizontal" class="ship-button">Horizontal</button><button id="destroyer-vertical" class="ship-button">Vertical</button></span></li>
-            <li class="select-ships-item" id="cruiser-container"><span class="ship-name">Cruiser</span> <span class="ship-button-container float-right"><button id="cruiser-horizontal" class="ship-button">Horizontal</button><button id="cruiser-vertical" class="ship-button">Vertical</button></span></li>
-            <li class="select-ships-item" id="submarine-container"><span class="ship-name">Submarine</span> <span class="ship-button-container float-right"><button id="submarine-horizontal" class="ship-button">Horizontal</button><button id="submarine-vertical" class="ship-button">Vertical</button></span></li>
-            <li class="select-ships-item" id="battleship-container"><span class="ship-name">Battleship</span> <span class="ship-button-container float-right"><button id="battleship-horizontal" class="ship-button">Horizontal</button><button id="battleship-vertical" class="ship-button">Vertical</button></span></li>
-            <li class="select-ships-item" id="carrier-container"><span class="ship-name">Carrier</span> <span class="ship-button-container float-right"><button id="carrier-horizontal" class="ship-button">Horizontal</button><button id="carrier-vertical" class="ship-button">Vertical</button></span></li>
-            <li class="select-ships-item" id="ready-container"><span class="ship-button-container float-right"><button id="reset-button" class="ship-button">Reset</button><button id="ready-button" class="ship-button">Ready</button></span></li>
+
+            <li class="select-ships-item" id="destroyer-container">
+              <span class="ship-name">Destroyer</span> 
+              <img src="/img/destroyer.png" height="22px"/>
+              <span class="ship-button-container float-right">
+                <button id="destroyer-horizontal" class="btn ship-button">Horizontal</button>
+                <button id="destroyer-vertical" class="btn ship-button">Vertical</button>
+              </span>
+            </li>
+
+            <li class="select-ships-item" id="cruiser-container">
+              <span class="ship-name">Cruiser</span>
+              <img src="/img/cruiser.png" height="22px" /> 
+              <span class="ship-button-container float-right">
+                <button id="cruiser-horizontal" class="btn ship-button">Horizontal</button>
+                <button id="cruiser-vertical" class="btn ship-button">Vertical</button>
+              </span>
+            </li>
+
+            <li class="select-ships-item" id="submarine-container">
+              <span class="ship-name">Submarine</span>
+              <img src="/img/submarine.png" height="18px" /> 
+              <span class="ship-button-container float-right">
+                <button id="submarine-horizontal" class="btn ship-button">Horizontal</button>
+                <button id="submarine-vertical" class="btn ship-button">Vertical</button>
+              </span>
+            </li>
+
+            <li class="select-ships-item" id="battleship-container">
+              <span class="ship-name">Battleship</span> 
+              <img src="/img/battleship.png" height="32px" />
+              <span class="ship-button-container float-right">
+                <button id="battleship-horizontal" class="btn ship-button">Horizontal</button>
+                <button id="battleship-vertical" class="btn ship-button">Vertical</button>
+              </span>
+            </li>
+
+            <li class="select-ships-item" id="carrier-container">
+              <span class="ship-name">Carrier</span>
+              <img src="/img/carrier.png" height="50px" /> 
+              <span class="ship-button-container float-right">
+                <button id="carrier-horizontal" class="btn ship-button">Horizontal</button>
+                <button id="carrier-vertical" class="btn ship-button">Vertical</button>
+              </span>
+            </li>
+
+            <li class="select-ships-item" id="ready-container">
+              <span class="ship-button-container float-right">
+                <button id="reset-button" class="btn ship-button">Reset</button>
+                <button id="ready-button" class="btn ship-button">Ready</button>
+              </span>
+            </li>
           </ul>
         </div>
       </div>
@@ -58,14 +104,14 @@
 
   <!-- Chat Box -->
   <div class="container ">
-    <div class="row justify-content-center chat-box-container">
+    <div class="row justify-content-center chat-box-container no-gutters">
       
       <div id="chat-box" class="col-12 chat-container mb-2">
       </div>
 
       <div class="input-group col-12">
         <input id="message" type="text" class="form-control" placeholder="Get Rekt">
-        <span class="input-group-btn"><button id="message-send" class="btn btn-secondary">Send</button></span>
+        <span class="input-group-btn"><button id="message-send" class="btn btn-chat-send">Send</button></span>
       </div>
 
     </div>
