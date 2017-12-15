@@ -2,36 +2,25 @@ module.exports = function(io){
 
   let express = require('express');
   let router = express.Router();
+  let users = [];
   let Lobby = require('../classes/Lobby');
   let Game = require('../classes/Game');
   let Users = require('../classes/Users');
 
-  //Array to keep a list of all users connected
-  let users = [];
-
-
   io.on('connection', (socket)=>{
-
-    //  A user connects to the lobby
-    //  Get their username and socket.id and push it into users array
-    //  Make all clients update their list of users
     socket.on('lobby-connect', (data)=>{
-      let user = {
+
+    let user = {
         username: data.username,
         id: socket.id,
       }
-
       users.push(user);
 
       io.emit('load-users', {
         users: users,
       })
-
     })
 
-    //  A user disconnects from lobby
-    //  Find user with matching socket.id and remove from array
-    //  Make all users reload their list of users
     socket.on('disconnect', ()=>{
       users.forEach((user, index)=>{
         if(user.id === socket.id){
@@ -42,20 +31,12 @@ module.exports = function(io){
       io.emit('load-users', {
         users: users,
       })
-
     })
 
-    //  A user sends a message on lobby chat
-    //  Let all client see the message in lobby chat
     socket.on('message-send', (data)=>{
       io.emit('message-sent',data);
     });
 
-
-    //  A user clicks 'create room' button
-    //  Retrieve the last room created on database
-    //  Send to all users the roomId that was created
-    //  Create a socket namespace with the roomId
     socket.on('create-room', ()=>{
       let lobby = new Lobby();
 
@@ -67,12 +48,10 @@ module.exports = function(io){
         io.emit('created-room', {
           id: roomId,
         })
-      })
 
+      })
     })
 
-    //  A user clicks join button on player1
-    //  Send to all users data of the playername of who clicked and the roomId 
     socket.on('player1-click-join', (data)=>{
       let lobby = new Lobby();
       let roomId = data.roomId;
@@ -86,8 +65,6 @@ module.exports = function(io){
 
     })
 
-    //  A user clicks join button on player2
-    //  Send to all users data of playername of who clicked and roomId
     socket.on('player2-click-join', (data)=>{
       let lobby = new Lobby();
       let roomId = data.roomId;
@@ -98,13 +75,12 @@ module.exports = function(io){
           player2name: result[0].player2,
         })
       });
-
     })
 
 
-  })  // io.on(connection) end
+  })
 
-  //Private socket for each individual game room
+  //Private sockets for individual rooms
   function createNamespace(roomId){
     let room = io.of('/game/' + roomId);
     let ready = 0;
@@ -119,12 +95,10 @@ module.exports = function(io){
     let lobby = new Lobby();
     let user = new Users();
 
-    //  A user connects to room
-    //  Set players as player1 and player2
-    //  Send to both users name of players connected
+    //When players connect to room
     room.on('connection', (socket)=>{
       lobby.getPlayersName(roomId).then( result =>{
-
+        //Set players as player1 and player2
         player1 = result[0].player1;
         player2 = result[0].player2;
 
@@ -132,25 +106,19 @@ module.exports = function(io){
           player1: result[0].player1,
           player2: result[0].player2,
         })
-
       });
 
-    //  A user sends a message on room chat
-    //  Send to all users the message and username that was sent
-    socket.on('message-send', data => {
-      room.emit('message-sent', {
-        message: data.message,
-        username: data.username
-      })
+
+     socket.on('message-send', data => {
+
+       room.emit('message-sent', {
+         message: data.message,
+         username: data.username
+       })
 
      });
 
-    //  A user clicks on ready
-    //  If 1 user clicks ready, notify all users the player is ready to play
-    //  If 2 users clicks ready,
-    //  Get ship positions from DB and store them as arrays
-    //  Randomly select a user to have the first turn
-    //  Start game
+    //Players click ready, emit ready status
     socket.on('player-ready', (data)=>{
       ready++;
 
@@ -162,105 +130,101 @@ module.exports = function(io){
       }
 
       if(ready === 2){
-        game.getShipPositions(roomId, player1).then( results =>{
 
+        //Push ship positions into an array
+        game.getShipPositions(roomId, player1).then( results =>{
           results.forEach( result =>{
             player1positions.push(result.ship_position);
           })
 
         }).then(()=>{
 
-        game.getShipPositions(roomId, player2).then( results =>{
-
-          results.forEach( result =>{
+          game.getShipPositions(roomId, player2).then( results =>{
+            results.forEach( result =>{
               player2positions.push(result.ship_position);
+            })
+          }).then(()=>{
+
+            //Randomly pick who starts
+            if( (Math.floor(Math.random() * 2) + 1) === 1){
+              turn = player1;
+            } else {
+              turn = player2;
+            }
+
+            room.emit('start-game', {
+              player1positions : player1positions,
+              player2positions : player2positions,
+              turn,
+            });
+            ready = 0;
+
+            })
+
           })
 
-        }).then(()=>{
+        }
 
-          if( (Math.floor(Math.random() * 2) + 1) === 1){
-            turn = player1;
+      }) // socket.on('ready-player') end
+
+      //Check if selected position will hit a ship or miss
+      socket.on('check-position', (data)=>{
+
+        //If shot is from player1
+        if(player1 == data.playerName){
+
+          //If player1 hits an enemey ship
+          if(player2positions.includes(data.position)){
+            let index = player2positions.indexOf(data.position);
+
+            player2positions.splice(index, 1);
+
+            game.getShipName(roomId, player2, data.position).then( data =>{
+              let shipName = data[0].ship_type;
+              shipName.toUpperCase();
+ 
+              socket.emit('hit', {
+                position: data.position,
+              });
+              
+              room.emit('message-sent', {
+                username: '<span style="color:red"><strong>GAME</strong></span>',
+                message: '<span style="color:red;"><strong>' + player1.toUpperCase() + ' HITS A ' + shipName + ' </strong></span>',
+              })
+
+            })
+
           } else {
-            turn = player2;
-          }
-
-          room.emit('start-game', {
-            player1positions : player1positions,
-            player2positions : player2positions,
-            turn,
-          });
-
-          ready = 0;
-
-          })
-
-        })
-
-      }
-
-    })  // socket.on('ready-player') end
-
-    //  User clicks end turn
-    //  Check if selected position corresponds with a position the opponent has
-    //  If yes, emit 'hit' and remove the positon from the array, else emit 'miss'
-    //  If a player's position array is empty, the other player wins
-    socket.on('check-position', (data)=>{
-
-      //If shot is from player1
-      if(player1 == data.playerName){
-
-        //If player1 hits an enemey ship
-        if(player2positions.includes(data.position)){
-          let index = player2positions.indexOf(data.position);
-
-          player2positions.splice(index, 1);
-
-          game.getShipName(roomId, player2, data.position).then( data =>{
-            let shipName = data[0].ship_type;
-            shipName.toUpperCase();
-
-            socket.emit('hit', {
+            socket.emit('miss', {
               position: data.position,
             });
 
             room.emit('message-sent', {
-              username: '<span style="color:red"><strong>GAME</strong></span>',
-              message: '<span style="color:red;"><strong>' + player1.toUpperCase() + ' HITS A ' + shipName + ' </strong></span>',
+                username: '<span style="color:red"><strong>GAME</strong></span>',
+                message: '<span style="color:red;"><strong>' + player1.toUpperCase() + ' MISSES  </strong></span>',
+             })
+
+          }
+
+          if(player2positions.length == 0){
+
+            game.deleteGameRoom(roomId).then(()=>{
+
+              game.deleteShipPositions(roomId);
+              user.addWin(player1);
+              user.addLoss(player2);
+              room.emit('game-over', {
+                winner: player1,
+              })
+
             })
 
-          })
+            return;
+          }
 
-        } else {
-          socket.emit('miss', {
-            position: data.position,
+          room.emit('end-turn', {
+            turn: player2,
           });
-
-          room.emit('message-sent', {
-              username: '<span style="color:red"><strong>GAME</strong></span>',
-              message: '<span style="color:red;"><strong>' + player1.toUpperCase() + ' MISSES  </strong></span>',
-          })
-
-        }
-
-        if(player2positions.length == 0){
-
-          game.deleteGameRoom(roomId).then(()=>{
-
-            game.deleteShipPositions(roomId);
-            user.addWin(player1);
-            user.addLoss(player2);
-            room.emit('game-over', {
-              winner: player1,
-            })
-
-          })
-
-          return;
-        }
-
-        room.emit('end-turn', {
-          turn: player2,
-        });
 
         //If shot is from player2
         } else {
@@ -318,9 +282,9 @@ module.exports = function(io){
 
         }
 
-    })
+      })
 
-  }) //Individual Room Socket end
+    }) //Room Socket end
 
   }
 
