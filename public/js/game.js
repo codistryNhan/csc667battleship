@@ -452,6 +452,8 @@ class Game {
     }
 
     /* LOAD GAME BOARDS */
+
+    //  Player's Gameboard
     let playerGameBoard = createGameBoard('player');
     let playerBoard = document.createElement('div');
     playerBoard.setAttribute('class', 'col');
@@ -463,6 +465,7 @@ class Game {
     yourBoardLabel.innerHTML = 'YOU';
     playerBoard.appendChild(yourBoardLabel);
 
+    //  Opponent's GameBoard
     let opponentGameBoard = createGameBoard('opponent');
     let opponentBoard = document.createElement('div');
     opponentBoard.setAttribute('class', 'col');
@@ -471,15 +474,20 @@ class Game {
 
     let opponentBoardLabel = document.createElement('div');
     opponentBoardLabel.className += 'text-center';
-    opponentBoardLabel.innerHTML = "OPPONENT";
+    opponentBoardLabel.innerHTML = 'OPPONENT';
     opponentBoard.appendChild(opponentBoardLabel);
 
+    //  Waiting Board
     let waitingGameBoard = createGameBoard('waiting');
     let waitingBoard = document.createElement('div');
     waitingBoard.setAttribute('class', 'col');
     waitingBoard.setAttribute('id', 'waiting-board');
     waitingBoard.appendChild(waitingGameBoard);
 
+    let waitingBoardLabel = document.createElement('div');
+    waitingBoardLabel.className += 'text-center';
+    waitingBoardLabel.innerHTML = 'OPPONENT';
+    waitingBoard.appendChild(waitingBoardLabel);
 
     //Create Div to under board
     let rowB = document.createElement('div');
@@ -522,10 +530,22 @@ class Game {
         let currentPosition = parseInt(cell.getAttribute('data-opponent-position'));
 
         cell.addEventListener('click', ()=>{
-          //selectOpponentPosition = parseInt(cell.getAttribute('data-opponent-position'));
+          if(selectOpponentPosition && !(positionHistory.includes(selectOpponentPosition)) ){
+            opponentCells[selectOpponentPosition].style.backgroundColor = "white";
+          }
+
+          if(positionHistory.includes(currentPosition)){
+            socket.emit('message-send', {
+              username: '<span style="color:red"><strong>GAME</strong></span>',
+              message:'<span style="color:red;"><strong>Cannot choose the same position twice</strong></span>',
+            })
+
+            return;
+          }
+
           selectOpponentPosition = currentPosition;
+
           cell.style.backgroundColor = 'red';
-          positionHistory.push(currentPosition);
         });
 
         cell.addEventListener('mouseover', ()=>{
@@ -538,7 +558,7 @@ class Game {
 
         cell.addEventListener('mouseout', ()=>{
 
-          if( !(positionHistory.includes(currentPosition)) ){
+          if( !(positionHistory.includes(currentPosition) || selectOpponentPosition === currentPosition) ){
             cell.style.backgroundColor = 'white';
           }
 
@@ -547,6 +567,7 @@ class Game {
 
       //Add event listener to submit to check position
       submitPosition.addEventListener('click', ()=>{
+        positionHistory.push(selectOpponentPosition);
 
         socket.emit('check-position', {
           playerName: username,
