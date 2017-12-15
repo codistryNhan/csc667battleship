@@ -143,7 +143,7 @@ nav{
 
 .user-list-container{
   color:#fce300;
-  font-size:18px;
+  font-size:1.25rem;
   background-color:#3f3f3f;
   height:500px;
   overflow-y:scroll;
@@ -151,7 +151,6 @@ nav{
   padding-left:15px !important;
 }
 
-/* Lobby End */
 
 /* Chat Box */
 
@@ -166,6 +165,19 @@ nav{
   height:200px;
   overflow-y:scroll;
   border:solid 2px silver;
+}
+
+.btn-chat-send{
+  background-color:#fce300;
+  color:black;
+}
+
+.chat-message{
+  font-size:1.25rem;
+}
+
+.chat-username{
+  color:#0069D9;
 }
 
 /* Game Dashboard */

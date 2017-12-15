@@ -21,19 +21,15 @@ router.post('/login', function(req,res){
 
   let username = req.body.username;
   let password = req.body.password;
-
   let user = new Users();
 
-  user.login(username, password)
-  .then( result => {
-
+  user.login(username, password).then( result => {
     if(result){
       res.locals.session.username = username;
       res.redirect('/lobby');
     } else {
       res.render('login');
     }
-
   })
 
 })
@@ -188,10 +184,8 @@ router.post('/game/setPositions', (req,res)=>{
   let query = format('INSERT INTO ship_positions(room_id, player, ship_position, ship_type) VALUES %L', allRows);
 
   db.any(query).then( ()=>{
-
+    res.sendStatus(200);
   });
-
-  res.sendStatus(200);
 
 })
 
