@@ -1,4 +1,4 @@
-<div class="container">
+'<div class="container">
 
   <div class="lobby-header row no-gutters">
 
@@ -31,7 +31,7 @@
 
     <div class="input-group">
       <input type="text" id="message" class="form-control" placeholder="Get Rekt">
-      <span class="input-group-btn" id="message-send"><button id="message-send" class="btn btn-secondary" type="submit">Send</button></span>
+      <span class="input-group-btn" id="message-send"><button id="message-send" class="btn btn-chat-send" type="submit">Send</button></span>
      </div>
 
   </div>
@@ -128,8 +128,16 @@
   //Put message on chat box
   socket.on('message-sent', (data)=>{
     let chatBox = document.getElementById('chat-box');
+
+    let chatName = document.createElement('span');
+    chatName.setAttribute('class', 'chat-username');
+    chatName.innerHTML = data.username;
+
     let message = document.createElement('div');
-    message.innerHTML = data.username + ": " + data.message;
+    message.setAttribute('class','chat-message');
+    message.appendChild(chatName);
+
+    message.innerHTML += ": " + data.message;
 
     chatBox.appendChild(message);
 
