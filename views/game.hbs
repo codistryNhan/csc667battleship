@@ -172,13 +172,18 @@
 
   socket.on('message-sent', (data) => {
     let chatBox = document.getElementById('chat-box');
-    let message = data.message;
-    let username = data.username;
 
-    let chatMessage = document.createElement('p');
-    chatMessage.innerHTML = username + ': ' + message;
+    let chatName = document.createElement('span');
+    chatName.setAttribute('class', 'chat-username');
+    chatName.innerHTML = data.username;
 
-    chatBox.appendChild(chatMessage);
+    let message = document.createElement('div');
+    message.setAttribute('class','chat-message');
+    message.appendChild(chatName);
+
+    message.innerHTML += ": " + data.message;
+
+    chatBox.appendChild(message);
 
     chatBox.scrollTop = chatBox.scrollHeight;
   })
