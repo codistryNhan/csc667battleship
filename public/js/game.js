@@ -348,22 +348,6 @@ class Game {
 	$('#battleship-container').slideDown();
 	$('#carrier-container').slideDown();
       })
-      /*
-      let destroyerReady = document.getElementById('destroyer-container');
-      destroyerReady.innerHTML = '';
-
-      let submarineReady = document.getElementById('submarine-ready');
-      submarineReady.innerHTML = '';
-
-      let cruiserReady = document.getElementById('cruiser-ready');
-      cruiserReady.innerHTML = '';
-
-      let battleshipReady = document.getElementById('battleship-ready');
-      battleshipReady.innerHTML = '';
-
-      let carrierReady = document.getElementById('carrier-ready');
-      carrierReady.innerHTML = '';
-      */
     })
     /* RESET BUTTON END */
 
@@ -412,7 +396,7 @@ class Game {
     let main = document.getElementById('gameboard');
     let count = 0;
     let gameboard = document.createElement('table');
-    gameboard.setAttribute('id', 'gameboard');
+    gameboard.setAttribute('class', 'gameboard');
 
     //creates the letters on top of game board A -> J
     let firstRow = document.createElement('tr');
@@ -467,18 +451,35 @@ class Game {
       main.removeChild(main.firstChild);
     }
 
-    /* LOAD GAME BOARD */
+    /* LOAD GAME BOARDS */
     let playerGameBoard = createGameBoard('player');
     let playerBoard = document.createElement('div');
     playerBoard.setAttribute('class', 'col');
     playerBoard.setAttribute('id', 'player-board');
     playerBoard.appendChild(playerGameBoard);
 
+    let yourBoardLabel = document.createElement('div');
+    yourBoardLabel.className += 'text-center';
+    yourBoardLabel.innerHTML = 'YOU';
+    playerBoard.appendChild(yourBoardLabel);
+
     let opponentGameBoard = createGameBoard('opponent');
     let opponentBoard = document.createElement('div');
     opponentBoard.setAttribute('class', 'col');
     opponentBoard.setAttribute('id', 'opponent-board');
     opponentBoard.appendChild(opponentGameBoard);
+
+    let opponentBoardLabel = document.createElement('div');
+    opponentBoardLabel.className += 'text-center';
+    opponentBoardLabel.innerHTML = "OPPONENT";
+    opponentBoard.appendChild(opponentBoardLabel);
+
+    let waitingGameBoard = createGameBoard('waiting');
+    let waitingBoard = document.createElement('div');
+    waitingBoard.setAttribute('class', 'col');
+    waitingBoard.setAttribute('id', 'waiting-board');
+    waitingBoard.appendChild(waitingGameBoard);
+
 
     //Create Div to under board
     let rowB = document.createElement('div');
@@ -503,6 +504,7 @@ class Game {
     rowA.className = "row";
     rowA.appendChild(playerBoard);
     rowA.appendChild(opponentBoard);
+    rowA.appendChild(waitingBoard);
     main.appendChild(rowA);
 
     loadShips(positions);
@@ -513,6 +515,8 @@ class Game {
       let positionHistory = [];
       let selectOpponentPosition;
       let opponentCells = document.getElementsByClassName('opponent-cell');
+      let opponentBoard = document.getElementById('opponent-board');
+      let waitingBoard = document.getElementById('waiting-board');
 
       [].forEach.call(opponentCells, cell =>{
         let currentPosition = parseInt(cell.getAttribute('data-opponent-position'));
@@ -556,9 +560,15 @@ class Game {
       if(turn === username){
         buttonContainer.appendChild(submitPosition);
         main.appendChild(buttonContainer);
+
+        opponentBoard.style.display = "block";
+        waitingBoard.style.display = "none";
       } else {
         buttonContainer.appendChild(waitingOpponent);
         main.appendChild(buttonContainer);
+
+        opponentBoard.style.display = "none";
+        waitingBoard.style.display = "block";
       }
 
       socket.on('end-turn', (data)=>{
@@ -568,10 +578,16 @@ class Game {
           buttonContainer.removeChild(buttonContainer.firstChild);
           buttonContainer.appendChild(submitPosition);
           main.appendChild(buttonContainer);
+
+          opponentBoard.style.display = "block";
+          waitingBoard.style.display = "none";
         } else {
           buttonContainer.removeChild(buttonContainer.firstChild);
           buttonContainer.appendChild(waitingOpponent);
           main.appendChild(buttonContainer);
+
+          opponentBoard.style.display = "none";
+          waitingBoard.style.display = "block";
         }
       })
 
@@ -614,7 +630,7 @@ class Game {
     function createGameBoard(name) {
       let count = 0;
       let gameboard = document.createElement('table');
-      gameboard.setAttribute('id', 'gameboard');
+      gameboard.setAttribute('class', 'gameboard');
 
       //creates the letters on top of game board A -> J
       let firstRow = document.createElement('tr');

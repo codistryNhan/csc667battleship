@@ -29,6 +29,7 @@ body{
 
 button{
   outline:none;
+  cursor:pointer;
 }
 
 a:hover{
@@ -155,7 +156,6 @@ nav{
 /* Chat Box */
 
 .chat-box-container{
-  padding:15px 0px;
 }
 
 .chat-container{
@@ -199,6 +199,7 @@ nav{
 .select-ships{
   background-color:black;
   padding:25px 25px;
+  margin-top:25px;
 }
 
 .select-ships li{
@@ -257,7 +258,7 @@ nav{
 /* Game Board */
 
 /* cell size */
-#gameboard td{
+.gameboard td{
   border: solid 1px black;
   padding:22px;
 }
@@ -287,7 +288,7 @@ nav{
 
 #submit-position{
   background-color: black;
-  color: white;
+  color: #fce300;
   display:block;
   border:none;
   width:460px;
@@ -295,14 +296,30 @@ nav{
   transition: ease 0.5s;
 }
 
+#submit-position:hover{
+  opacity:0.3;
+}
+
 
 #waiting-opponent{
-  background-color: white;
+  background-color: #fce300;
   color: black;
   display:block;
-  border:solid 2px black;
   width:460px;
   padding: 15px 0px;
+  border:none;
+}
+
+#waiting-opponent:hover{
+  opacity:0.3;
+}
+
+#waiting-board{
+}
+
+#waiting-board td{
+  background-color:#343A40;
+  opacity:0.3;
 }
 
 
@@ -311,7 +328,7 @@ nav{
   position:absolute;
   z-index:1;
   top:25%;
-  left:30%;
+  left:35%;
   width:600px;
   height:400px; 
   background-color:#343A40;
