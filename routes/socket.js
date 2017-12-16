@@ -224,8 +224,8 @@ module.exports = function(io){
             });
 
             room.emit('message-sent', {
-              username: '<span style="color:red"><strong>GAME</strong></span>',
-              message: '<span style="color:red;"><strong>' + player1.toUpperCase() + ' HITS A ' + shipName + ' </strong></span>',
+              username: '<span style="color:red;"><strong>GAME</strong></span>',
+              message: player1 + ' hits a ' + shipName,
             })
 
           })
@@ -237,7 +237,7 @@ module.exports = function(io){
 
           room.emit('message-sent', {
               username: '<span style="color:red"><strong>GAME</strong></span>',
-              message: '<span style="color:red;"><strong>' + player1.toUpperCase() + ' MISSES  </strong></span>',
+              message: player1 + ' misses',
           })
 
         }
@@ -280,7 +280,7 @@ module.exports = function(io){
 
               room.emit('message-sent', {
                 username: '<span style="color:red"><strong>GAME</strong></span>',
-                message: '<span style="color:red;"><strong>' + player2.toUpperCase() + ' HITS A ' + shipName + ' </strong></span>',
+                message: player2 + ' hits a  ' + shipName ,
               })
 
             })
@@ -292,7 +292,7 @@ module.exports = function(io){
 
             room.emit('message-sent', {
                 username: '<span style="color:red"><strong>GAME</strong></span>',
-                message: '<span style="color:red;"><strong>' + player2.toUpperCase() + ' MISSES  </strong></span>',
+                message:  player2 + ' misses',
              })
           }
 

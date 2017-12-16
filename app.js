@@ -11,6 +11,7 @@ var bodyParser = require('body-parser');
 var session = require('express-session');
 var socketIo = require('socket.io');
 
+var Game = require('./classes/Game');
 var routes = require('./routes/routes');
 
 var app = express();
@@ -19,6 +20,10 @@ app.locals.title = 'Battleship';
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'hbs');
+
+//Remove all game_room and ship_positions upon server start-up
+var game = new Game();
+game.deleteAllRooms();
 
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));

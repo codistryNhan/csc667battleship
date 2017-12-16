@@ -16,6 +16,10 @@ class Game{
     return db.any('DELETE FROM game_room WHERE id = $1', [roomId]);
   }
 
+  deleteAllRooms(){
+    return db.any('TRUNCATE game_room, ship_positions RESTART IDENTITY');
+  }
+
   deleteShipPositions(roomId){
     return db.any('DELETE FROM ship_positions WHERE room_id = $1', [roomId]);
   }

@@ -478,7 +478,7 @@ class Game {
     opponentBoard.appendChild(opponentBoardLabel);
 
     //  Waiting Board
-    let waitingGameBoard = createGameBoard('waiting');
+  /*let waitingGameBoard = createGameBoard('waiting');
     let waitingBoard = document.createElement('div');
     waitingBoard.setAttribute('class', 'col');
     waitingBoard.setAttribute('id', 'waiting-board');
@@ -488,7 +488,7 @@ class Game {
     waitingBoardLabel.className += 'text-center';
     waitingBoardLabel.innerHTML = 'OPPONENT';
     waitingBoard.appendChild(waitingBoardLabel);
-
+  */
     //Create Div to under board
     let rowB = document.createElement('div');
     rowB.className = 'row';
@@ -505,14 +505,13 @@ class Game {
     //Create opponent waiting box
     let waitingOpponent = document.createElement('button');
     waitingOpponent.id = 'waiting-opponent';
-    waitingOpponent.innerHTML = "Waiting on opponent...";
+    waitingOpponent.innerHTML = "Opponent's turn...";
 
     //Attach both boards on to page
     let rowA = document.createElement('div');
     rowA.className = "row";
     rowA.appendChild(playerBoard);
     rowA.appendChild(opponentBoard);
-    rowA.appendChild(waitingBoard);
     main.appendChild(rowA);
 
     loadShips(positions);
@@ -582,14 +581,14 @@ class Game {
         buttonContainer.appendChild(submitPosition);
         main.appendChild(buttonContainer);
 
-        opponentBoard.style.display = "block";
-        waitingBoard.style.display = "none";
+       // opponentBoard.style.display = "block";
+       // waitingBoard.style.display = "none";
       } else {
         buttonContainer.appendChild(waitingOpponent);
         main.appendChild(buttonContainer);
 
-        opponentBoard.style.display = "none";
-        waitingBoard.style.display = "block";
+        //opponentBoard.style.display = "none";
+        //waitingBoard.style.display = "block";
       }
 
       socket.on('end-turn', (data)=>{
@@ -600,15 +599,15 @@ class Game {
           buttonContainer.appendChild(submitPosition);
           main.appendChild(buttonContainer);
 
-          opponentBoard.style.display = "block";
-          waitingBoard.style.display = "none";
+          //opponentBoard.style.display = "block";
+          //waitingBoard.style.display = "none";
         } else {
           buttonContainer.removeChild(buttonContainer.firstChild);
           buttonContainer.appendChild(waitingOpponent);
           main.appendChild(buttonContainer);
 
-          opponentBoard.style.display = "none";
-          waitingBoard.style.display = "block";
+          //opponentBoard.style.display = "none";
+          //waitingBoard.style.display = "block";
         }
       })
 

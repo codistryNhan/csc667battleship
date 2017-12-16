@@ -1,4 +1,4 @@
-'<div class="container">
+<div class="container">
 
   <div class="lobby-header row no-gutters">
 
@@ -10,11 +10,11 @@
 
   <div class="row no-gutters">
 
-    <div class=" col-9 room-list no-gutters" id="room-list-container">
+    <div class=" col-9 no-gutters" id="room-list-container">
       <ul id="room-list">
         {{#each lobby as | room |}}
-            <li class="room-item"> Room <span class="roomNum">{{room.id}}</span> - Player 1:<span class="player1Name">{{#if room.player1}} {{room.player1}} </span> {{else}}</span> <button data-room-id="{{room.id}}" class="btn btn-primary player1Join">Join</button> {{/if}} ---------- 
-                                    Player 2: <span class="player2Name">{{#if room.player2}} {{room.player2}}</span> {{else}}</span> <button data-room-id="{{room.id}}" class="btn btn-primary player2Join">Join</button> {{/if}}</li>
+            <li class="room-item"> <div class="room-num-container">Room <span class="roomNum">{{room.id}}</span></div><div class="playerLabel"> Player 1</div><span id="player1Name" class="playerName">{{#if room.player1}} {{room.player1}} </span> {{else}}</span> <button data-room-id="{{room.id}}" class="btn btn-primary player1Join">Join</button> {{/if}}  
+                                   <div class="playerLabel"> Player 2 </div><span id="player2Name" class="playerName">{{#if room.player2}} {{room.player2}}</span> {{else}}</span> <button data-room-id="{{room.id}}" class="btn btn-primary player2Join">Join</button> {{/if}}</li>
         {{/each}}
       </ul>
     </div>
@@ -26,7 +26,7 @@
   </div>
 
   <div class="row no-gutters">
-    <div id="chat-box" class="col chat-container mb-2">
+    <div id="chat-box" class="col chat-container">
     </div>
 
     <div class="input-group">
@@ -77,8 +77,7 @@
       pageRoomNum = parseInt(pageRoomNum[0].innerHTML);
 
       if(pageRoomNum === roomId){
-        let player1NameSpan = room.getElementsByClassName('player1Name');
-        player1NameSpan = player1NameSpan[0];
+        let player1NameSpan = room.getElementById('player1Name');
         player1NameSpan.innerHTML = " " + player1Name;
 
         let player1Button = room.getElementsByClassName('player1Join');
@@ -99,8 +98,7 @@
       pageRoomNum = parseInt(pageRoomNum[0].innerHTML);
 
       if(pageRoomNum === roomId){
-        let player2NameSpan = room.getElementsByClassName('player2Name');
-        player2NameSpan = player2NameSpan[0];
+        let player2NameSpan = room.getElementById('player2Name');
         player2NameSpan.innerHTML = " " + player2Name;
 
         let player2Button = room.getElementsByClassName('player2Join');

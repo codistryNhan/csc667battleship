@@ -37,7 +37,7 @@ a:hover{
 }
 
 .main-content{
-  padding:50px 0px;
+  padding-top:15px;
 }
 
 .navbar-brand{
@@ -109,20 +109,18 @@ nav{
 
 /* Lobby */
 
-.lobby-header{  font-size:24px;
-  padding:12px 0px;
+.lobby-header{  
+  font-size:24px;
+  padding-bottom:12px;
+
 }
 
 #room-list-container{
-  border:solid 2px white;
-}
-
-.room-list{
-  height:500px;
+  height:400px;
   overflow-y:scroll;
-  border-top:solid 2px silver;
-  border-left:solid 2px silver
-
+  border-top:white 1px solid;
+  border-bottom:white 1px solid;
+  border-left:white 1px solid;
 }
 
 .room-item{
@@ -131,9 +129,9 @@ nav{
   list-style:none;
   text-decoration:none;
   background-color:#3f3f3f;
-  border-bottom:solid 2px white;
-  padding:20px;
   display:block;
+  border-top:solid 1px white;
+  border-left:solid 1px white;
 }
 
 .room-item:hover{
@@ -142,11 +140,32 @@ nav{
   color:white;
 }
 
+.room-num-container{
+  display:inline-block;
+  border-right:solid 1px white;
+  min-width:112px;
+  padding:20px;
+}
+
+.roomNum{
+  color:#FCE000;
+}
+
+.playerLabel{
+  display:inline-block;
+  padding:20px;
+}
+
+.playerName{
+  color: #FCE000;
+  font-size:1.25rem;
+}
+
 .user-list-container{
   color:#fce300;
   font-size:1.25rem;
   background-color:#3f3f3f;
-  height:500px;
+  height:400px;
   overflow-y:scroll;
   border:solid 2px white;
   padding-left:15px !important;
@@ -160,12 +179,12 @@ nav{
 
 .chat-container{
   color:black;
-  margin-top:15px; 
   background-color:white;
   height:135px;
   overflow-y:scroll;
-  border:solid 2px silver;
+  border:solid 2px white;
   border-radius: 0.25rem;
+  margin: 15px 0px;
 }
 
 .btn-chat-send{
@@ -327,10 +346,9 @@ nav{
 #game-over{
   position:absolute;
   z-index:1;
-  top:25%;
+  top:18%;
   left:25%;
   width:600px;
-  height:400px; 
   background-color:#343A40;
   padding:40px 60px;
   border:#FCE300 solid 3px;
@@ -344,7 +362,7 @@ nav{
   padding:25px 40px;
   cursor:pointer;
   transition:ease 0.3s;
-  margin-top:50px;
+  margin-top:25px;
   display:block;
 }
 
@@ -352,3 +370,8 @@ nav{
   background-color:white;
   color:#343A40
 }
+
+.sinkShip{
+  margin:10px 0px;
+}
+
