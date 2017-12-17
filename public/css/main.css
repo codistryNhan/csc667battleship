@@ -130,7 +130,7 @@ nav{
   text-decoration:none;
   background-color:#3f3f3f;
   display:block;
-  border-top:solid 1px white;
+  border-bottom:solid 1px white;
   border-left:solid 1px white;
 }
 
