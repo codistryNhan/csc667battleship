@@ -5,7 +5,7 @@ class Lobby{
   constructor(){}
 
   createRoom(){
-    return db.any("INSERT INTO game_room(player1) VALUES('')");
+    return db.any("INSERT INTO game_room(player1) VALUES(NULL)");
   }
 
   deleteRoom(roomNumber){

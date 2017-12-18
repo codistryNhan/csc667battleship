@@ -215,13 +215,14 @@ module.exports = function(io){
 
           player2positions.splice(index, 1);
 
+          room.emit('hit', {
+              playerName: player1,
+              position: data.position,
+          });
+
           game.getShipName(roomId, player2, data.position).then( data =>{
             let shipName = data[0].ship_type;
             shipName.toUpperCase();
-
-            socket.emit('hit', {
-              position: data.position,
-            });
 
             room.emit('message-sent', {
               username: '<span style="color:red;"><strong>GAME</strong></span>',
@@ -231,7 +232,8 @@ module.exports = function(io){
           })
 
         } else {
-          socket.emit('miss', {
+          room.emit('miss', {
+            playerName : player1,
             position: data.position,
           });
 
@@ -270,13 +272,14 @@ module.exports = function(io){
 
             player1positions.splice(index, 1);
 
+            room.emit('hit', {
+                playerName: player2,
+                position: data.position,
+            });
+
             game.getShipName(roomId, player1, data.position).then( data =>{
               let shipName = data[0].ship_type;
               shipName.toUpperCase();
-
-              socket.emit('hit', {
-                position: data.position,
-              });
 
               room.emit('message-sent', {
                 username: '<span style="color:red"><strong>GAME</strong></span>',
@@ -286,7 +289,8 @@ module.exports = function(io){
             })
 
           } else {
-            socket.emit('miss', {
+            room.emit('miss', {
+              playerName: player2,
               position: data.position,
             });
 
@@ -318,6 +322,20 @@ module.exports = function(io){
 
         }
 
+    })
+
+    socket.on('opponent-mouseover', (data)=>{
+      room.emit('highlight-opponent-mouseover', {
+        playerName: data.playerName,
+        position: data.position,
+      })
+    })
+
+    socket.on('opponent-mouseleave', (data)=>{
+      room.emit('highlight-opponent-mouseleave', {
+        playerName: data.playerName,
+        position: data.position,
+      })
     })
 
   }) //Individual Room Socket end

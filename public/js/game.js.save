@@ -8,8 +8,8 @@ class Game {
     this.shipColor = '#4b535b';
     this.oceanColor = '#00a9ff';
     this.shotColor = '#d80000';
-    this.oceanMissColor = '#0200aa';
     this.turn;
+    this.shipPositions = [];
   }
 
   setUsername(username){
@@ -442,7 +442,6 @@ class Game {
     let shipColor = this.shipColor;
     let oceanColor = this.oceanColor;
     let shotColor = this.shotColor;
-    let oceanMissColor = this.oceanMissColor;
     let socket = this.socket;
     let username = this.username;
     let turn = this.turn;
@@ -524,7 +523,6 @@ class Game {
       let positionHistory = [];
       let selectOpponentPosition;
       let opponentCells = document.getElementsByClassName('opponent-cell');
-      let playerCells = document.getElementsByClassName('player-cell');
       let opponentBoard = document.getElementById('opponent-board');
       let waitingBoard = document.getElementById('waiting-board');
 
@@ -556,8 +554,7 @@ class Game {
             cell.style.backgroundColor = 'red';
           }
 
-          //Show opponent's mouseover
-          socket.emit('opponent-mouseover',{
+          socket.emit('opponent-hover',{
               playerName : username,
               position: currentPosition,
           })
@@ -570,33 +567,8 @@ class Game {
             cell.style.backgroundColor = 'white';
           }
 
-          //Show opponent's mouseleave
-          socket.emit('opponent-mouseleave', {
-            playerName : username,
-            position: currentPosition,
-          })
-
         })
       })
-
-      /* Show opponent movement events 
-      socket.on('opponent-mouseover', (data =>{
-        if(data.playerName !== username){
-          let yourBoard = document.getElementsByClassName('player-cell');
-
-          yourBoard[data.position].style.backgroundColor = '#fce300';
-        }
-      }))
-
-      socket.on('opponent-mouseleave', (data =>{
-        if(data.playerName !== username){
-          let yourBoard = document.getElementsByClassName('player-cell');
-
-          let currentColor = 
-          yourBoard[data.position].style.
-        }
-      })
-       Show opponent movement events end */
 
       //Add event listener to submit to check position
       submitPosition.addEventListener('click', ()=>{
@@ -646,26 +618,11 @@ class Game {
       })
 
       socket.on('hit', (data)=>{
-        if(data.playerName == username){
-          opponentCells[data.position].style.backgroundColor = shotColor;
-        } else {
-          playerCells[data.position].style.backgroundColor = shotColor;
-        }
-
+        opponentCells[data.position].style.backgroundColor = shotColor;
       })
 
       socket.on('miss', (data)=>{
-        let playerName = data.playerName;
-        let position = data.position;
-        let playerCells = document.getElementsByClassName('player-cell');
-        let opponentCells = document.getElementsByClassName('opponent-cell');
-
-        if(playerName == username){
-          opponentCells[position].style.backgroundColor = oceanMissColor;
-        } else {
-          playerCells[position].style.backgroundColor = oceanMissColor;
-        }
-
+        opponentCells[data.position].style.backgroundColor = oceanColor;
       })
 
       socket.on('game-over', (data)=>{
@@ -677,6 +634,21 @@ class Game {
 
       })
 
+      socket.on('opponent-mouseOver', data =>{
+        if(data.playerName !== username){
+          let yourBoard = document.getElementsByClassName('player-cell');
+
+          yourBoard[data.position].style.backgroundColor = 'red';
+        }
+      })
+
+      socket.on('opponent-mouseLeave', data =>{
+        if(data.playNamer !== username){
+          let yourBoard = document.getElementsByClassNAme('player-cell');
+
+          yourBoard[data.position].style.backgroundColor = oceanColor;
+        }
+      })
 
     }
 
@@ -691,7 +663,6 @@ class Game {
 
           if(cellPosition == position){
             cell.style.backgroundColor = shipColor;
-            cell.setAttribute('data-ship', 'true');
           }
 
         })

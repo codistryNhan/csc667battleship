@@ -19,12 +19,12 @@
 
       <div class="col">
         <h5>Player 1</h5>
-        <h1 class="yellow"><span id="player1Name">{{#if player1}} {{player1}} {{else}} Waiting for player... {{/if}}</span></h1>
+        <h1 class="yellow"><span id="player1Name">{{#if player1}} {{player1}} {{else}} <div class="loader"></div>Waiting for player... {{/if}}</span></h1>
       </div>
 
       <div class="col">
         <h5>Player 2</h5>
-        <h1 class="yellow"><span id="player2Name">{{#if player2}} {{player2}} {{else}} Waiting for player... {{/if}}</span></h1>
+        <h1 class="yellow"><span id="player2Name">{{#if player2}} {{player2}} {{else}} <div class="loader"></div>Waiting for player {{/if}}</span></h1>
       </div>
     </div>
   </div>
@@ -147,7 +147,6 @@
     } else {
       playerNum = 2;
     }
-
 
     if (player1 !== null) {
       player1NameSpan.innerHTML = player1;

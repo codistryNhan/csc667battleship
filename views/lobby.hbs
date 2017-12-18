@@ -16,9 +16,10 @@
             <li class="room-item">
               <div class="room-num-container">Room <span class="roomNum">{{room.id}}</span></div>
                 <div class="playerLabel"> Player 1</div><span id="player1Name" class="playerName">{{#if room.player1}} {{room.player1}} </span> {{else}}</span> 
-                  <button data-room-id="{{room.id}}" class="btn btn-primary player1Join">Join</button> {{/if}}  
+                  <button data-room-id="{{room.id}}" class="btn btn-primary player1Join">Join</button> {{/if}}
+  
                 <div class="playerLabel"> Player 2 </div><span id="player2Name" class="playerName">{{#if room.player2}} {{room.player2}}</span> {{else}}</span> 
-                  <button data-room-id="{{room.id}}" class="btn btn-primary player2Join">Join</button> {{/if}}
+                  <button data-room-id="{{room.id}}" class="btn btn-primary player2Join">Join</button>{{/if}}
             </li>
         {{/each}}
       </ul>
@@ -166,10 +167,19 @@
     let roomList = document.getElementById('room-list');
     let roomItem = document.createElement('li');
     roomItem.setAttribute('class', 'room-item');
+    roomItem.style.display = 'none';
+
     let roomId = room.id;
     roomItem.innerHTML = `<div class="room-num-container">Room <span class="roomNum">${roomId}</span></div> <div class="playerLabel">Player 1</div><span id="player1Name" class="playerName"></span>  <button data-room-id="${roomId}"class="btn btn-primary player1Join">Join</button> <div class="playerLabel"> Player 2</div><span id="player2Name" class="playerName"></span> <button data-room-id="${roomId}" class="btn btn-primary player2Join">Join</button>`;
     
     roomList.appendChild(roomItem);
+
+    $(function(){
+      let $this = $(roomItem);
+
+      $this.slideDown(200);
+    })
+
     setJoinButtons();
 
     roomListContainer.scrollTop = roomListContainer.scrollHeight;
