@@ -1,9 +1,37 @@
 <div id="game-room" class="container">
 
+  <div id="game-notifications">
+    <div id="game-notification-item">
+      <div id="miss" class="row">
+        <div class="col">
+          <span class="notification-label">MISS</span>
+          <div class="notification-message">E5 - tester hits water</div>
+        </div>
+
+        <div class="col-4">
+          <img class="img-fluid" src="/img/miss2.gif"/>
+        </div>
+      </div>
+    </div>
+
+    <div id="game-notification-item">
+      <div id="hit" class="row">
+        <div class="col">
+          <span class="notification-label">HIT</span>
+          <div class="notification-message">D4 - tester hits a Destroyer</div>
+        </div>
+
+        <div class="col-4">
+          <img class="img-fluid" src="/img/explosion2.gif"/>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- Game Over Pop up -->
   <div id="game-over" draggable="true" class="text-center">
     <h1 class="yellow">GAME OVER</h1>
-    <div class="sinkShip"><img src="/img/sinkShip.gif" /></div>
+    <div class="sinkShip"><img src="/img/shipSink.gif" /></div>
     <h2 id="game-over-message"></h2>
     <a id="game-over-leave" href="/lobby">Leave</a>
   </div>

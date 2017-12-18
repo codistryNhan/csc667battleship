@@ -341,10 +341,37 @@ nav{
   opacity:0.3;
 }
 
+/* Game Notifications */
+#game-notifications{
+  position:absolute;
+  z-index:1;
+  top:15%;
+  left:35%;
+  width:400px;
+  height:600px;
+  opacity:1;
+  pointer-events:none;
+}
+
+#game-notification-item{
+  padding:15px 20px;
+  background-color:black;
+  margin-bottom:15px;
+}
+
+.notification-label{
+  color:white;
+  font-size:2rem;
+}
+
+.notification-message{
+  color:#fce300;
+  font-size:1.25rem;
+}
 
 /* Game over container */
 #game-over{
-  position:absolute;
+  position:relative;
   z-index:1;
   top:18%;
   left:25%;
