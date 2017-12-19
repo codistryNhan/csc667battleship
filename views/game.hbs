@@ -30,7 +30,7 @@
   </div> 
 
   <!-- Game Over Pop up -->
-  <div id="game-over" draggable="true" class="text-center">
+  <div id="game-over" class="text-center">
     <h1 class="yellow">GAME OVER</h1>
     <div class="sinkShip"><img src="/img/shipSink.gif" /></div>
     <h2 id="game-over-message"></h2>
@@ -61,7 +61,7 @@
   <!-- Gameboard  -->
   <div id="main">
     <div class="row mb-4">
-      <div id="gameboard" class="col">
+      <div id="gameboard" class="col-auto">
       </div>
 
       <div clas="col">
@@ -72,10 +72,14 @@
         <div class="select-ships">
           <ul>
             <li class="select-ships-header">Select Ships</li>
+            <li class="select-ship-label">
+              <span class="ship-name">Ship Type</span>
+              <span class="ship-name">Ship Length</span>
+            </li>
 
             <li class="select-ships-item" id="destroyer-container">
-              <span class="ship-name">Destroyer</span> 
-              <img src="/img/destroyer.png" height="22px"/>
+              <span class="ship-name">Destroyer</span>2 
+              <img class="ship-img" src="/img/destroyer.png" height="22px"/></span>
               <span class="ship-button-container float-right">
                 <button id="destroyer-horizontal" class="btn ship-button">Horizontal</button>
                 <button id="destroyer-vertical" class="btn ship-button">Vertical</button>
@@ -83,8 +87,8 @@
             </li>
 
             <li class="select-ships-item" id="cruiser-container">
-              <span class="ship-name">Cruiser</span>
-              <img src="/img/cruiser.png" height="22px" /> 
+              <span class="ship-name">Cruiser</span>3
+              <img class="ship-img" src="/img/cruiser.png" height="22px" /> 
               <span class="ship-button-container float-right">
                 <button id="cruiser-horizontal" class="btn ship-button">Horizontal</button>
                 <button id="cruiser-vertical" class="btn ship-button">Vertical</button>
@@ -92,8 +96,8 @@
             </li>
 
             <li class="select-ships-item" id="submarine-container">
-              <span class="ship-name">Submarine</span>
-              <img src="/img/submarine.png" height="18px" /> 
+              <span class="ship-name">Submarine</span>3
+              <img class="ship-img" src="/img/submarine.png" height="18px" /> 
               <span class="ship-button-container float-right">
                 <button id="submarine-horizontal" class="btn ship-button">Horizontal</button>
                 <button id="submarine-vertical" class="btn ship-button">Vertical</button>
@@ -101,8 +105,8 @@
             </li>
 
             <li class="select-ships-item" id="battleship-container">
-              <span class="ship-name">Battleship</span> 
-              <img src="/img/battleship.png" height="32px" />
+              <span class="ship-name">Battleship</span>4 
+              <img class="ship-img" src="/img/battleship.png" height="32px" />
               <span class="ship-button-container float-right">
                 <button id="battleship-horizontal" class="btn ship-button">Horizontal</button>
                 <button id="battleship-vertical" class="btn ship-button">Vertical</button>
@@ -110,8 +114,8 @@
             </li>
 
             <li class="select-ships-item" id="carrier-container">
-              <span class="ship-name">Carrier</span>
-              <img src="/img/carrier.png" height="40px" /> 
+              <span class="ship-name">Carrier</span>5
+              <img class="ship-img" src="/img/carrier.png" height="40px" /> 
               <span class="ship-button-container float-right">
                 <button id="carrier-horizontal" class="btn ship-button">Horizontal</button>
                 <button id="carrier-vertical" class="btn ship-button">Vertical</button>

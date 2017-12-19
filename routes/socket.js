@@ -219,7 +219,7 @@ module.exports = function(io){
 
           game.getShipName(roomId, player2, data.position).then( data =>{
             let shipName = data[0].ship_type;
-            shipName.toUpperCase();
+            shipName = shipName.toUpperCase();
 
             let message = boardPosition + ' - ' +  player1 + ' hits a ' + shipName + '.';
 
@@ -283,7 +283,7 @@ module.exports = function(io){
 
             game.getShipName(roomId, player1, data.position).then( data =>{
               let shipName = data[0].ship_type;
-              shipName.toUpperCase();
+              shipName = shipName.toUpperCase();
 
               let message = boardPosition + ' - ' +player2 + ' hits a ' + shipName + '.';
 

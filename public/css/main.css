@@ -229,6 +229,10 @@ nav{
   font-size:2rem;
 }
 
+.select-ship-label{
+  border-bottom:1px solid white;
+}
+
 .select-ships-item{
   padding-top:15px;
   padding-bottom:15px;
@@ -242,14 +246,21 @@ nav{
 }
 
 .ship-button{
+  font-size:0.9rem;
   background-color:white;
   color:black;
   margin-right:8px;
   transition:ease 0.4s;
+  padding-left:8px;
+  padding-right:8px;
 }
 
 .ship-button:hover{
   opacity:0.5;
+}
+
+.ship-img{
+  margin-left:10px;
 }
 
 #reset-button{
@@ -279,16 +290,21 @@ nav{
 /* cell size */
 .gameboard td{
   border: solid 1px black;
-  padding:22px;
+  padding:20px;
 }
 
 .letter-cell{
   padding-right:5px;
 }
 
-@media (max-width: 1000px){
+@media (min-width: 1200px){
+  .ship-button{
+    min-width:110px;
+    font-size:1rem;
+  }
+
   #gameboard td{
-    padding:16px;
+    padding:22px;
   }
 }
 
@@ -296,10 +312,6 @@ nav{
   #gameboard td{
     padding:12px;
   }
-}
-
-.select-ships button{
-  min-width:110px;
 }
 
 .button-container{
