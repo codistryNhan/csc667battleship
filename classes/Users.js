@@ -81,6 +81,28 @@ class Users{
   addLoss(username){
     return db.any('UPDATE users set loss = loss + 1 WHERE username = $1', [username]);
   }
+
+  getName(username){
+    return db.any('SELECT username FROM users WHERE username = $1', [username]);
+  }
+
+  createGuest(){
+
+    while(loop){
+      let loop = true;
+      let guestName = 'guest';
+      let randomNum = Math.floor( Math.random() * 10000);
+      guestName += randomNum;
+
+      this.getName(guestName).then(result=>{
+        if( !(guestName === result[0].username) ){
+          loop = false;
+        }
+      })
+    }
+
+    return guestName;
+  }
 }
 
 module.exports = Users;

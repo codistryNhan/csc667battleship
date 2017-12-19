@@ -205,6 +205,7 @@ module.exports = function(io){
     //  If yes, emit 'hit' and remove the positon from the array, else emit 'miss'
     //  If a player's position array is empty, the other player wins
     socket.on('check-position', (data)=>{
+      let shotPosition = data.position;
 
       //If shot is from player1
       if(player1 == data.playerName){
@@ -215,31 +216,38 @@ module.exports = function(io){
 
           player2positions.splice(index, 1);
 
-          room.emit('hit', {
-              playerName: player1,
-              position: data.position,
-          });
-
           game.getShipName(roomId, player2, data.position).then( data =>{
             let shipName = data[0].ship_type;
             shipName.toUpperCase();
 
+            let message = player1 + ' hits a ' + shipName + '.';
+
+            room.emit('hit', {
+              playerName: player1,
+              position: shotPosition,
+              message: message,
+            });
+
             room.emit('message-sent', {
               username: '<span style="color:red;"><strong>GAME</strong></span>',
-              message: player1 + ' hits a ' + shipName,
-            })
+              message: message,
+            });
 
           })
 
         } else {
+          /* Player 1 hits water */
+          let message = player1 + ' hits water.';
+
           room.emit('miss', {
             playerName : player1,
-            position: data.position,
+            position: shotPosition,
+            message: message,
           });
 
           room.emit('message-sent', {
               username: '<span style="color:red"><strong>GAME</strong></span>',
-              message: player1 + ' misses',
+              message: message,
           })
 
         }
@@ -272,31 +280,38 @@ module.exports = function(io){
 
             player1positions.splice(index, 1);
 
-            room.emit('hit', {
-                playerName: player2,
-                position: data.position,
-            });
-
             game.getShipName(roomId, player1, data.position).then( data =>{
               let shipName = data[0].ship_type;
               shipName.toUpperCase();
 
+              let message = player2 + ' hits a ' + shipName + '.';
+
+              room.emit('hit', {
+                playerName: player2,
+                position: shotPosition,
+                message: message,
+              });
+
               room.emit('message-sent', {
                 username: '<span style="color:red"><strong>GAME</strong></span>',
-                message: player2 + ' hits a  ' + shipName ,
+                message: message ,
               })
 
             })
 
           } else {
+            /* Player 2 hits water */
+
+            let message = player2 + ' hits water.';
             room.emit('miss', {
               playerName: player2,
-              position: data.position,
+              position: shotPosition,
+              message: message,
             });
 
             room.emit('message-sent', {
                 username: '<span style="color:red"><strong>GAME</strong></span>',
-                message:  player2 + ' misses',
+                message:  message,
              })
           }
 
@@ -324,6 +339,7 @@ module.exports = function(io){
 
     })
 
+    /*
     socket.on('opponent-mouseover', (data)=>{
       room.emit('highlight-opponent-mouseover', {
         playerName: data.playerName,
@@ -336,7 +352,7 @@ module.exports = function(io){
         playerName: data.playerName,
         position: data.position,
       })
-    })
+    })*/
 
   }) //Individual Room Socket end
 

@@ -282,6 +282,10 @@ nav{
   padding:22px;
 }
 
+.letter-cell{
+  padding-right:5px;
+}
+
 @media (max-width: 1000px){
   #gameboard td{
     padding:16px;
@@ -371,8 +375,8 @@ nav{
 
 /* Game over container */
 #game-over{
-  position:relative;
-  z-index:1;
+  position:absolute;
+  z-index:2;
   top:18%;
   left:25%;
   width:600px;

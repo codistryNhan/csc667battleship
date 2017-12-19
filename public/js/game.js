@@ -391,35 +391,34 @@ class Game {
   
 
   /* CREATES GAMEBOARD */
-  //Creates a gameboard of input size
-  //Each cell has of a class of 'cell' and 'data-position'
   createGameBoard(size) {
     let main = document.getElementById('gameboard');
     let count = 0;
     let gameboard = document.createElement('table');
     gameboard.setAttribute('class', 'gameboard');
 
-    //creates the letters on top of game board A -> J
+    //creates the numbers 1 - 10 on top of board
     let firstRow = document.createElement('tr');
     let emptyCell = document.createElement('th');
     firstRow.appendChild(emptyCell);
-    let alphaIndex = 65;
 
-    for (let i = 0; i < 10; i++) {
-      let letterList = document.createElement('th');
-      letterList.setAttribute('class', 'text-center');
-      letterList.innerHTML = '&#' + alphaIndex++;
-      firstRow.appendChild(letterList);
-      gameboard.appendChild(firstRow);
+    for(let i = 0; i < 10; i++){
+      let numRow = document.createElement('th');
+      numRow.setAttribute('class', 'text-center');
+      numRow.innerHTML = i + 1;
+      firstRow.appendChild(numRow); 
     }
+    gameboard.appendChild(firstRow);
 
-    // creates the numbers on side and cells
+    // creates the letters A - J on left side  and individual cells
     for (let i = 0; i < size; i++) {
       let row = document.createElement('tr');
-      let numList = document.createElement('th');
-      let index = i + 1;
-      numList.innerHTML = index;
-      row.appendChild(numList);
+      let letterList = document.createElement('th');
+      let alphaIndex = 65 + i;
+
+      letterList.setAttribute('class', 'letter-cell');
+      letterList.innerHTML = '&#' + alphaIndex++;
+      row.appendChild(letterList);
 
       for (let k = 0; k < size; k++) {
         let cell = document.createElement('td');
@@ -434,8 +433,6 @@ class Game {
 
     main.appendChild(gameboard);
   }
-  // PHASE 1 END //
-
 
   //PHASE 2 OF GAME //
   startGame(positions){
@@ -533,7 +530,7 @@ class Game {
 
         cell.addEventListener('click', ()=>{
           if(selectOpponentPosition && !(positionHistory.includes(selectOpponentPosition)) ){
-            opponentCells[selectOpponentPosition].style.backgroundColor = "white";
+            opponentCells[selectOpponentPosition].style.backgroundColor = oceanColor;
           }
 
           if(positionHistory.includes(currentPosition)){
@@ -567,7 +564,7 @@ class Game {
         cell.addEventListener('mouseout', ()=>{
 
           if( !(positionHistory.includes(currentPosition) || selectOpponentPosition === currentPosition) ){
-            cell.style.backgroundColor = 'white';
+            cell.style.backgroundColor = oceanColor;
           }
 
           //Show opponent's mouseleave
@@ -646,10 +643,29 @@ class Game {
       })
 
       socket.on('hit', (data)=>{
+        let playerName = data.playerName;
+        let position = data.position;
+        let message = data.message;
+
+        let notificationContainer = document.getElementById('game-notifications');
+
+        let hitNotification = createHitNotification(message);
+        notificationContainer.appendChild(hitNotification);
+        $(function(){
+          let $this = $(hitNotification);
+
+          $this.slideDown(350, ()=>{
+            setTimeout( ()=>{
+              $this.slideUp(350);
+            }, 4000);
+          });
+        })
+
+
         if(data.playerName == username){
-          opponentCells[data.position].style.backgroundColor = shotColor;
+          opponentCells[position].style.backgroundColor = shotColor;
         } else {
-          playerCells[data.position].style.backgroundColor = shotColor;
+          playerCells[position].style.backgroundColor = shotColor;
         }
 
       })
@@ -657,8 +673,21 @@ class Game {
       socket.on('miss', (data)=>{
         let playerName = data.playerName;
         let position = data.position;
-        let playerCells = document.getElementsByClassName('player-cell');
-        let opponentCells = document.getElementsByClassName('opponent-cell');
+        let message = data.message;
+
+        let notificationContainer = document.getElementById('game-notifications');
+
+        let missNotification = createMissNotification(message);
+        notificationContainer.appendChild(missNotification);
+        $(function(){
+          let $this = $(missNotification);
+
+          $this.slideDown(350, ()=>{
+            setTimeout( ()=>{
+              $this.slideUp(350);
+            }, 4000);
+          });
+        })
 
         if(playerName == username){
           opponentCells[position].style.backgroundColor = oceanMissColor;
@@ -703,27 +732,28 @@ class Game {
       let gameboard = document.createElement('table');
       gameboard.setAttribute('class', 'gameboard');
 
-      //creates the letters on top of game board A -> J
+      //creates the numbers 1 - 10 on top of board
       let firstRow = document.createElement('tr');
       let emptyCell = document.createElement('th');
       firstRow.appendChild(emptyCell);
-      let alphaIndex = 65;
 
-      for (let i = 0; i < 10; i++) {
-        let letterList = document.createElement('th');
-        letterList.setAttribute('class', 'text-center');
-        letterList.innerHTML = '&#' + alphaIndex++;
-        firstRow.appendChild(letterList);
-        gameboard.appendChild(firstRow);
+      for(let i = 0; i < 10; i++){
+        let numRow = document.createElement('th');
+        numRow.setAttribute('class', 'text-center');
+        numRow.innerHTML = i + 1;
+        firstRow.appendChild(numRow);
       }
+      gameboard.appendChild(firstRow);
 
-      // creates the numbers on side and cells
+      // creates the letters A - J on left side  and individual cells
       for (let i = 0; i < 10; i++) {
         let row = document.createElement('tr');
-        let numList = document.createElement('th');
-        let index = i + 1;
-        numList.innerHTML = index;
-        row.appendChild(numList);
+        let letterList = document.createElement('th');
+        let alphaIndex = 65 + i;
+
+        letterList.setAttribute('class', 'letter-cell');
+        letterList.innerHTML = '&#' + alphaIndex++;
+        row.appendChild(letterList);
 
         for (let k = 0; k < 10; k++) {
           let cellName = 'data-' + name + '-position';
@@ -734,7 +764,7 @@ class Game {
           if(name == 'player'){
             cell.style.backgroundColor = oceanColor; 
           } else {
-            cell.style.backgroundColor = 'white';
+            cell.style.backgroundColor = oceanColor;
           }
 
           row.appendChild(cell);
@@ -745,6 +775,45 @@ class Game {
 
       return gameboard;
     }
+
+    function createMissNotification(message){
+      let missNotification = document.createElement('div');
+      missNotification.setAttribute('id', 'game-notification-item');
+      missNotification.style.display = 'none';
+      missNotification.innerHTML =
+        `<div id="miss" class="row">
+          <div class="col">
+            <span class="notification-label">MISS</span>
+            <div class="notification-message">${message}</div>
+          </div>
+
+          <div class="col-4">
+            <img class="img-fluid" src="/img/miss2.gif"/>
+          </div>
+        </div>`;
+
+      return missNotification;
+    }
+
+    function createHitNotification(message){
+      let hitNotification = document.createElement('div');
+      hitNotification.setAttribute('id', 'game-notification-item');
+      hitNotification.style.display = 'none';
+      hitNotification.innerHTML = 
+        `<div id="hit" class="row">
+           <div class="col">
+             <span class="notification-label">HIT</span>
+              <div class="notification-message">${message}</div>
+           </div>
+
+          <div class="col-4">
+            <img class="img-fluid" src="/img/explosion2.gif"/>
+          </div>
+        </div>`;
+
+      return hitNotification;
+    }
+
   }
 
   // PHASE 2 END //
