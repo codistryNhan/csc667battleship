@@ -206,6 +206,7 @@ module.exports = function(io){
     //  If a player's position array is empty, the other player wins
     socket.on('check-position', (data)=>{
       let shotPosition = data.position;
+      let boardPosition = getBoardPosition(data.position);
 
       //If shot is from player1
       if(player1 == data.playerName){
@@ -220,7 +221,7 @@ module.exports = function(io){
             let shipName = data[0].ship_type;
             shipName.toUpperCase();
 
-            let message = player1 + ' hits a ' + shipName + '.';
+            let message = boardPosition + ' - ' +  player1 + ' hits a ' + shipName + '.';
 
             room.emit('hit', {
               playerName: player1,
@@ -237,7 +238,7 @@ module.exports = function(io){
 
         } else {
           /* Player 1 hits water */
-          let message = player1 + ' hits water.';
+          let message = boardPosition + ' - ' + player1 + ' hits water.';
 
           room.emit('miss', {
             playerName : player1,
@@ -284,7 +285,7 @@ module.exports = function(io){
               let shipName = data[0].ship_type;
               shipName.toUpperCase();
 
-              let message = player2 + ' hits a ' + shipName + '.';
+              let message = boardPosition + ' - ' +player2 + ' hits a ' + shipName + '.';
 
               room.emit('hit', {
                 playerName: player2,
@@ -302,7 +303,7 @@ module.exports = function(io){
           } else {
             /* Player 2 hits water */
 
-            let message = player2 + ' hits water.';
+            let message = boardPosition + ' - ' + player2 + ' hits water.';
             room.emit('miss', {
               playerName: player2,
               position: shotPosition,
@@ -359,5 +360,55 @@ module.exports = function(io){
   }
 
   return router;
+}
+
+function getBoardPosition(num){
+  let lastDigit = num % 10;
+
+  switch(true){
+    case(num > -1 && num < 10):
+      return 'A' + (lastDigit + 1);
+      break;
+
+    case(num > 9 && num < 20):
+      return 'B' + (lastDigit + 1);
+      break;
+
+    case(num > 19 && num < 30):
+      return 'C' + (lastDigit + 1);
+      break;
+
+    case(num > 29 && num < 40):
+      return 'D' + (lastDigit + 1);
+      break;
+
+    case(num > 39 && num < 50):
+      return 'E' + (lastDigit + 1);
+      break;
+
+    case(num > 49 && num < 60):
+      return 'F' + (lastDigit + 1);
+      break;
+
+    case(num > 59 && num < 70):
+      return 'G' + (lastDigit + 1);
+      break;
+
+    case(num > 69 && num < 80):
+      return 'H' + (lastDigit + 1);
+      break;
+
+    case(num > 79 && num < 90):
+      return 'I' + (lastDigit + 1);
+      break;
+
+    case(num > 89 && num < 100):
+      return 'J' + (lastDigit + 1);
+      break;
+
+    default:
+      return 'none';
+      break;
+  }
 }
 
